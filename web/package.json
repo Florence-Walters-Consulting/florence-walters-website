@@ -1,0 +1,52 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "admin:set-password": "tsx scripts/set-admin-password.ts"
+  },
+  "dependencies": {
+    "@tiptap/extension-image": "^3.31.4",
+    "@tiptap/pm": "^3.31.4",
+    "@tiptap/react": "^3.31.4",
+    "@tiptap/starter-kit": "^3.31.4",
+    "aos": "^2.3.4",
+    "bcryptjs": "^3.0.3",
+    "drizzle-orm": "^0.45.3",
+    "image-size": "^2.0.4",
+    "jose": "^6.2.12",
+    "mysql2": "^3.24.5",
+    "next": "16.4.0",
+    "nodemailer": "^10.0.16",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-google-recaptcha": "^3.1.0",
+    "sanitize-html": "^2.18.0",
+    "server-only": "^0.0.1",
+    "sweetalert2": "^11.26.25",
+    "swiper": "^12.2.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/aos": "^3.0.8",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-google-recaptcha": "^2.1.9",
+    "@types/sanitize-html": "^2.16.2",
+    "dotenv": "^18.0.6",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}

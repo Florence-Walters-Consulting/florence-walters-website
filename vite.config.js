@@ -10,9 +10,14 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
 	plugins: [react()],
 	server: {
+		// Local PHP backend: run `php -S localhost:8000` from the project root.
 		proxy: {
 			'/api': {
-				target: 'http://localhost/florencewalters',
+				target: 'http://localhost:8000',
+				changeOrigin: true,
+			},
+			'/site_img': {
+				target: 'http://localhost:8000',
 				changeOrigin: true,
 			},
 		},

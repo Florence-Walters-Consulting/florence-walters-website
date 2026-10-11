@@ -6,6 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"dev:api": "APP_ENV=development php -S localhost:8000",
 		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",

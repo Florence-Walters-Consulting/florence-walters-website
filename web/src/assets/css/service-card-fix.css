@@ -1,0 +1,14 @@
+/* All What We Do cards use the same light treatment. */
+.service-grid article.service-card-dark {
+	background: #fff;
+	color: var(--ink);
+}
+
+.service-grid article.service-card-dark a {
+	color: var(--navy);
+}
+
+.service-grid article.service-card-dark .service-icon {
+	background: #f0f1ff;
+	color: #3847a8;
+}

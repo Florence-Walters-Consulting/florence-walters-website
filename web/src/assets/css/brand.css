@@ -1,0 +1,392 @@
+:root {
+	--brand-navy: #1f2a44;
+	--brand-purple: #6b68f7;
+	--brand-black: #1b1b1b;
+	--brand-white: #ffffff;
+
+	--brand-heading: var(--brand-navy);
+	--brand-text: var(--brand-black);
+	--brand-accent: var(--brand-purple);
+	--brand-surface: var(--brand-white);
+	--brand-surface-soft: color-mix(in srgb, var(--brand-purple) 4%, var(--brand-white));
+	--brand-text-muted: color-mix(in srgb, var(--brand-black) 76%, var(--brand-white));
+	--brand-border: color-mix(in srgb, var(--brand-navy) 16%, var(--brand-white));
+	--brand-navy-muted: color-mix(in srgb, var(--brand-navy) 68%, var(--brand-white));
+	--brand-focus: color-mix(in srgb, var(--brand-purple) 22%, transparent);
+
+	--font-heading: 'Degular', 'Arial Narrow', Arial, sans-serif;
+	--font-body: 'Satoshi', Arial, sans-serif;
+
+	--primary: var(--brand-navy);
+	--primary-rgb: 31, 42, 68;
+	--secondary: var(--brand-purple);
+	--secondary-rgb: 107, 104, 247;
+	--black: var(--brand-black);
+	--white: var(--brand-white);
+	--service-dark: var(--brand-navy);
+	--service-heading: var(--brand-navy);
+	--service-text: var(--brand-text-muted);
+	--service-purple: var(--brand-purple);
+	--service-light-purple: var(--brand-surface-soft);
+	--service-border: var(--brand-border);
+	--service-white: var(--brand-white);
+}
+
+/* Readability baseline: keep supporting copy comfortably sized and high contrast. */
+body {
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+.service-grid p,
+.why-intro,
+.why-grid p,
+.process-grid p,
+.faq article > p,
+.featured-insight-copy > p,
+.about-services-grid p,
+.about-trust-grid p,
+.services-overview-grid article > p,
+.insights-summary,
+.contact-privacy,
+.legal-page-content p,
+.legal-page-content li,
+.legal-page-content address,
+.consultation-type-grid span {
+	color: var(--brand-text-muted) !important;
+	font-size: 16px;
+	line-height: 1.65;
+}
+
+.service-grid a,
+.service-card-actions a,
+.service-cta-buttons a,
+.about-services-grid a,
+.services-overview-grid article > a,
+.legal-page-nav a {
+	font-size: 14px;
+}
+
+.service-tags span,
+.client-types span,
+.services-client-types span,
+.about-team-info p {
+	font-size: 14px;
+}
+
+.fwc-footer a,
+.footer-brand small,
+.footer-bottom p {
+	color: #cbd1dc;
+	font-size: 14px;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+	font-family: var(--font-body) !important;
+}
+
+body {
+	color: var(--brand-text);
+	background: var(--brand-white);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.entry-title,
+.s-title,
+.service-title {
+	color: var(--brand-heading);
+	font-family: var(--font-heading) !important;
+}
+
+p,
+li,
+address,
+small,
+label,
+a,
+button,
+input,
+select,
+textarea {
+	font-family: var(--font-body) !important;
+}
+
+.service-detail-content {
+	--service-dark: var(--brand-navy);
+	--service-heading: var(--brand-navy);
+	--service-text: var(--brand-text-muted);
+	--service-purple: var(--brand-purple);
+	--service-light-purple: var(--brand-surface-soft);
+	--service-border: var(--brand-border);
+	--service-white: var(--brand-white);
+}
+
+a {
+	transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+a:hover,
+a:focus-visible,
+.link:hover,
+.link-underline:hover {
+	color: var(--brand-purple);
+}
+
+button,
+.btn,
+.tf-btn,
+.fwc-btn,
+.nav-consult {
+	font-family: var(--font-body);
+}
+
+.tf-btn,
+.fwc-btn:not(.light):not(.ghost),
+.nav-consult,
+.contact-form > button,
+.footer-brand button,
+.insights-pagination button.active,
+.insights-topics button.active,
+.insights-topics button:hover {
+	border-color: var(--brand-navy);
+	background: var(--brand-navy);
+	color: var(--brand-white);
+}
+
+.tf-btn:hover,
+.fwc-btn:not(.light):not(.ghost):hover,
+.nav-consult:hover,
+.contact-form > button:hover {
+	border-color: var(--brand-purple);
+	background: var(--brand-purple);
+	color: var(--brand-white);
+}
+
+.fwc-btn.light,
+.footer-brand button {
+	background: var(--brand-white);
+	color: var(--brand-navy);
+}
+
+.footer-brand button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+
+.footer-brand button span {
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+}
+
+.fwc-btn.ghost {
+	border-color: var(--brand-white);
+	color: var(--brand-white);
+}
+
+input,
+select,
+textarea,
+.contact-form input,
+.contact-form select,
+.contact-form textarea,
+.footer-brand input,
+.insights-search {
+	border-color: var(--brand-border);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+	border-color: var(--brand-purple);
+	box-shadow: 0 0 0 3px var(--brand-focus);
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--brand-text-muted);
+}
+
+.icon,
+[class^='icon-'],
+[class*=' icon-'] {
+	color: inherit;
+}
+
+.eyebrow,
+.featured-insight-category,
+.insights-category,
+.insight-article-category,
+.legal-page-intro > p:first-child,
+.service-section-label,
+.entry-tag {
+	color: var(--brand-purple);
+}
+
+.read-article,
+.insights-read,
+.featured-insights-head > a,
+.about-services-head > a,
+.service-link,
+.insight-related-head > a,
+.legal-page-content a,
+.contact-details a:hover {
+	color: var(--brand-purple);
+}
+
+.fwc-page-header,
+.process.fwc-section,
+.about-process,
+.cta,
+.fwc-footer {
+	background-color: var(--brand-navy);
+}
+
+.why,
+.about-firm,
+.featured-insights,
+.client-success,
+.about-services,
+.about-trust,
+.about-team,
+.services-overview,
+.services-clients,
+.insights-page,
+.insight-related,
+.contact-consultation,
+.legal-page {
+	background-color: var(--brand-surface-soft);
+}
+
+.featured-insights-grid article,
+.featured-insight-copy,
+.testimonial-card,
+.about-services-grid article,
+.about-trust-grid article,
+.about-team-grid article,
+.services-overview-grid article,
+.insights-card,
+.insights-status,
+.legal-page-content {
+	background-color: var(--brand-white);
+}
+
+.featured-insight-copy h3 a,
+.insights-card h2 a,
+.insight-article-body h2,
+.insight-article-body h3,
+.insight-article-body h4,
+.legal-page-content h2,
+.footer-brand button,
+.insight-directions > a {
+	color: var(--brand-navy);
+}
+
+.featured-insight-copy > p,
+.testimonial-body,
+.about-copy > p,
+.why-intro,
+.why-grid p,
+.services-overview-grid article > p,
+.insights-summary,
+.insight-article-body,
+.contact-details p,
+.contact-privacy,
+.legal-page-content p,
+.legal-page-content li,
+.legal-page-content address {
+	color: var(--brand-text-muted);
+}
+
+.topbar,
+.navigation,
+.fwc-hero,
+.fwc-footer,
+.fwc-page-header,
+.process.fwc-section,
+.about-process,
+.cta {
+	--brand-heading: var(--brand-white);
+}
+
+.fwc-hero-content h1 {
+	color: var(--brand-white);
+}
+
+.fwc-hero-content h1 b,
+.fwc-hero-content h1 strong {
+	color: var(--brand-purple);
+}
+
+::selection {
+	background: var(--brand-purple);
+	color: var(--brand-white);
+}
+
+:focus-visible {
+	outline: 2px solid var(--brand-purple);
+	outline-offset: 3px;
+}
+
+/* Larger header mark without changing the fixed navigation height. */
+.fwc-logo {
+	position: relative;
+	width: 100px;
+	height: 48px;
+	overflow: visible;
+}
+
+.fwc-logo img {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 70px;
+	height: 70px;
+	max-height: none;
+	object-fit: contain;
+	transform: translateY(-50%);
+}
+
+@media (max-width: 600px) {
+	.fwc-logo {
+		width: 100px;
+	}
+
+	.fwc-logo img {
+		width: 70px;
+		height: 70px;
+	}
+}
+
+.fwc-footer .footer-brand > img {
+	width: 180px;
+	height: auto;
+	max-height: none;
+}
+
+@media (max-width: 600px) {
+	.fwc-footer .footer-brand > img {
+		width: 165px;
+	}
+}

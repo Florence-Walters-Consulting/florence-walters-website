@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* Admin area only. Not loaded on the public site. */
+@theme {
+	--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--color-brand: #1f2a44;
+	--color-brand-soft: #eef0ff;
+	--color-accent: #6b68f7;
+}
+
+html { color-scheme: light; }
+dialog::backdrop { background: rgb(15 23 42 / 0.55); }

@@ -1,0 +1,9 @@
+/*
+ * Tailwind is loaded WITHOUT Preflight on purpose: the site's look comes from the legacy
+ * Bootstrap-based CSS (imported in layout.tsx), and Preflight would reset it.
+ * Tailwind utilities are for new code only. They sit in a CSS layer, so any unlayered
+ * legacy rule still wins over them.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
