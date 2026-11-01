@@ -157,3 +157,7 @@ Uploads go through `lib/storage.ts`. Only the **local disk** driver exists (deve
 - **Housekeeping found on the server (user's listing):** `/var/www/fwc/web/web` exists (modified 2026-10-11 21:16, before the first scripted deploy): a stray nested copy, matching the rsync warnings. Not used by the service. Remove after looking.
 - **Test-harness notes (not product bugs):** (a) injecting a fake `X-Forwarded-For` header into every request, including those to Google, prevents the reCAPTCHA widget from starting; (b) after a test restores a row with direct SQL the public pages can show the old value for up to an hour (Next's on-disk cache; admin edits invalidate it immediately). **Direct database edits (phpMyAdmin etc.) are not seen on the public site for up to an hour.**
 - **User's local `.env.local`:** the secret key was changed on 2026-10-11 22:04 and is no longer Google's test secret, while the site key is still the test one. The mismatch makes Google reject every captcha when running the site locally. The real secret belongs only in `/etc/fwc/web.env` on the server. (Not edited by me.)
+
+## Legacy removal
+- The legacy Vite + PHP code (`src/`, `api/`, `admin7362/`, root Vite/ESLint config, `deploy.js`, root `public/`, tracked `.env`) was removed from `website-revamp`. It is preserved on the `legacy-php` branch (commit a9a2276).
+- Kept at the repo root because `deploy/` scripts and `web/public/site_img` depend on them: `site_img/`, `florencewalters.sql`.
