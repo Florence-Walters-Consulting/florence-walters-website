@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Award, Compass, Headset, SlidersHorizontal } from 'lucide-react';
+import { Award, BadgeCheck, Compass, Headset, SlidersHorizontal } from 'lucide-react';
 import { AssessmentCta } from '@/components/home/AssessmentCta';
 import { Button } from '@/components/ui/Button';
 import { BrandFilm } from '@/components/ui/BrandFilm';
@@ -9,6 +9,7 @@ import { Icon3D } from '@/components/ui/Icon3D';
 import { PageHero } from '@/components/ui/PageHero';
 import { ReadMore } from '@/components/ui/ReadMore';
 import { Reveal } from '@/components/ui/Reveal';
+import { Scene3D } from '@/components/ui/Scene3D';
 import { SectionHead } from '@/components/ui/SectionHead';
 import { SiteLink } from '@/components/ui/SiteLink';
 import { homeServices } from '@/data/home';
@@ -39,7 +40,7 @@ export default function About() {
 				eyebrow="About"
 				lines={['Built for', 'African businesses.']}
 				lead="We give African businesses the quality of advisory support that was once available only to the largest corporations."
-				art={<BrandFilm src={media.brandFilm.video} poster={media.brandFilm.poster} title="Florence Walters Consulting: Structure. Strategy. Excellence." />}
+				art={<Scene3D icon={Compass} badge={BadgeCheck} docs={['Our story', 'Our approach']} tiles={[Award, Headset]} />}
 				actions={
 					<>
 						<Button href="/business-assessment" size="lg">Take the free assessment</Button>
@@ -47,6 +48,13 @@ export default function About() {
 					</>
 				}
 			/>
+
+			<section className="section-space pb-0">
+				<Container>
+					<SectionHead label="Our story in motion" title="Structure. Strategy. Excellence." line="Eighteen seconds on who we are and how we work." />
+					<Reveal className="mt-10"><BrandFilm src={media.brandFilm.video} poster={media.brandFilm.poster} title="Florence Walters Consulting: Structure. Strategy. Excellence." /></Reveal>
+				</Container>
+			</section>
 
 			<section className="section-space">
 				<Container className="grid items-center gap-12 lg:grid-cols-[5fr_6fr] lg:gap-20">
