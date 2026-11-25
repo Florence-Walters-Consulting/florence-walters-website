@@ -10,12 +10,13 @@ export const company = {
 } as const;
 
 /** Social profiles shown in the top bar, footer and contact page. Replace the URLs with the real profiles when they exist. */
-export const socials = [
-	{ label: 'LinkedIn', href: process.env.NEXT_PUBLIC_LINKEDIN_URL ?? 'https://www.linkedin.com/' },
-	{ label: 'Instagram', href: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? 'https://www.instagram.com/' },
-	{ label: 'Facebook', href: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? 'https://www.facebook.com/' },
-	{ label: 'X', href: process.env.NEXT_PUBLIC_X_URL ?? 'https://x.com/' },
-] as const;
+export const socials = ([
+	{ label: 'LinkedIn', href: process.env.NEXT_PUBLIC_LINKEDIN_URL ?? 'https://www.linkedin.com/company/florence-walters-consulting-fwc/' },
+	{ label: 'Instagram', href: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? 'https://www.instagram.com/florencewaltersconsulting_' },
+	{ label: 'Facebook', href: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? 'https://www.facebook.com/share/1Fm2vvqrgy/' },
+	// No X account yet: the icon appears once NEXT_PUBLIC_X_URL is set.
+	{ label: 'X', href: process.env.NEXT_PUBLIC_X_URL ?? '' },
+] as const).filter((s) => s.href !== '');
 
 export const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(company.address)}`;
 
