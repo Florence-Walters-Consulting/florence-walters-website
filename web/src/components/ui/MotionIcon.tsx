@@ -7,7 +7,7 @@ import { useReducedMotion } from '@/lib/use-reduced-motion';
 export type MotionName = 'setup' | 'compliance' | 'contracts' | 'growth' | 'marketing';
 type Kind = 'icon' | 'hero';
 
-const hasMp4: Record<string, boolean> = { 'icon-setup': true, 'icon-compliance': true, 'icon-contracts': true, 'icon-growth': true, 'icon-marketing': true, 'hero-setup': true, 'hero-compliance': true, 'hero-marketing': true };
+const hasMp4: Record<string, boolean> = { 'icon-setup': true, 'icon-compliance': true, 'icon-contracts': true, 'icon-growth': true, 'icon-marketing': true, 'hero-setup': true, 'hero-compliance': true };
 
 /**
  * One of Busola's animated graphics (transparent WebM, MP4 for Safari). It shows its still frame until it plays, and it

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { CertShowcase } from '@/components/services/CertShowcase';
 import { Container } from '@/components/ui/Container';
 import { CountUp } from '@/components/ui/CountUp';
 import { DocMock } from '@/components/ui/DocMock';
@@ -10,12 +11,13 @@ import { FanDeck } from '@/components/ui/FanDeck';
 import { Ring } from '@/components/ui/Ring';
 import { SectionHead } from '@/components/ui/SectionHead';
 import { cn } from '@/lib/cn';
+import type { WorkItem } from '@/lib/work';
 
 /**
  * One band for two ideas: the documents you walk away with (a deck that fans out on hover or tap), and what we need from you
  * (a checklist whose ring fills as you tick, and a button that adapts to how ready you are).
  */
-export function ReceiveNeed({ receive, need, notIncluded, startHref }: { receive: string[]; need: string[]; notIncluded?: string; startHref: string }) {
+export function ReceiveNeed({ receive, need, notIncluded, startHref, certs }: { receive: string[]; need: string[]; notIncluded?: string; startHref: string; certs?: Pick<WorkItem, 'slug' | 'code' | 'body' | 'certificateUrl'>[] }) {
 	const [done, setDone] = useState<Record<string, boolean>>({});
 	const count = need.filter((t) => done[t]).length;
 	const label = count === 0 ? 'Start the free assessment' : count === need.length ? 'You are ready. Start now' : 'Start with what you have';
@@ -25,8 +27,13 @@ export function ReceiveNeed({ receive, need, notIncluded, startHref }: { receive
 			<Container className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
 				<div>
 					<SectionHead label="What you receive" title="The documents you walk away with." />
-					<p className="mt-5 text-ink-soft"><strong className="text-3xl font-black text-ink"><CountUp to={receive.length} /></strong> <span className="ml-1">documents in your hands. Hover or tap the pile to read them.</span></p>
-					<FanDeck className={cn('mt-6', spacing)} label="Documents you receive. Press to spread them out." cards={receive.map((r) => <DocMock key={r} title={r} kind="Document" lines={3} />)} />
+					<p className="mt-5 text-ink-soft"><strong className="text-3xl font-black text-ink"><CountUp to={receive.length} /></strong> <span className="ml-1">{certs?.length ? 'things in your hands, like these real certificates we secured for clients.' : 'documents in your hands. Hover or tap the pile to read them.'}</span></p>
+					{certs?.length ? (
+						<div className="mt-6"><CertShowcase items={certs} /></div>
+					) : (
+						<FanDeck className={cn('mt-6', spacing)} label="Documents you receive. Press to spread them out." cards={receive.map((r) => <DocMock key={r} title={r} kind="Document" lines={3} />)} />
+					)}
+					{certs?.length ? <ul className="mt-5 grid gap-1.5 text-[0.9375rem] text-ink-soft sm:grid-cols-2">{receive.map((r) => <li key={r} className="before:mr-2 before:text-accent before:content-['•']">{r}</li>)}</ul> : null}
 					{notIncluded && <p className="mt-4 text-sm text-ink-soft">{notIncluded}</p>}
 				</div>
 				<div className="self-start rounded-card bg-mist p-6 sm:p-8">

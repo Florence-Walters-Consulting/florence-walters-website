@@ -28,8 +28,8 @@ export default async function ServicePage({ params }: Props) {
 	const page = servicePages[slug];
 	if (!page) notFound();
 
-	// The Licences hero shows the real certificates (everything with an image, regulatory ones first).
-	const certs = page.heroKind === 'certs' ? (await getPublishedWork()).filter((w) => w.certificateUrl).sort((a, b) => Number(b.service.slug === slug) - Number(a.service.slug === slug)) : [];
+	// Licences: "what you receive" shows the real certificates (everything with an image, regulatory ones first).
+	const certs = slug === 'regulatory-licensing-compliance' ? (await getPublishedWork()).filter((w) => w.certificateUrl).sort((a, b) => Number(b.service.slug === slug) - Number(a.service.slug === slug)) : [];
 	// "Start" buttons go to this service's short form, even when the hero button points at an on-page tool.
 	const startHref = page.action.href.startsWith('#') ? `/business-assessment?service=${slug}` : page.action.href;
 	const action = { label: page.action.href.startsWith('#') ? 'Take the free assessment' : page.action.label, href: startHref };
@@ -37,7 +37,7 @@ export default async function ServicePage({ params }: Props) {
 	return (
 		<>
 			{/* 1 Hero: live art, headline, one line, two buttons */}
-			<ServiceHero page={page} certs={certs} />
+			<ServiceHero page={page} />
 			{page.banner && <p className="bg-accent-btn px-5 py-3 text-center text-sm font-semibold text-white">{page.banner}</p>}
 			{/* 2 Is this for you? Tap the one that sounds like you */}
 			<Situations items={page.situations} action={action} />
@@ -55,7 +55,7 @@ export default async function ServicePage({ params }: Props) {
 				</div>
 			)}
 			{/* 4 and 5 What you receive, and what we need from you */}
-			<ReceiveNeed receive={page.receive} need={page.need} notIncluded={page.notIncluded} startHref={startHref} />
+			<ReceiveNeed receive={page.receive} need={page.need} notIncluded={page.notIncluded} startHref={startHref} certs={certs} />
 			{/* 6 Next step and FAQs */}
 			<NextStep page={page} startHref={startHref} />
 		</>

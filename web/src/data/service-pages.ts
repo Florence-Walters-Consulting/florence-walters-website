@@ -16,7 +16,7 @@ export type ServicePage = {
 	line: string;
 	/** Busola's animated graphics: the icon video, how the hero is built, and the page's signature tool. */
 	motion: MotionName;
-	heroKind: 'video' | 'certs' | 'icon';
+	heroKind: 'video';
 	tool: 'structure' | 'licences' | 'health' | 'goals' | 'brand';
 	/** The service-specific action (a short form, a check, a goal picker). */
 	action: { label: string; href: string };
@@ -24,7 +24,7 @@ export type ServicePage = {
 	art: { icon: LucideIcon; badge: LucideIcon; docs: [string, string]; tiles: [LucideIcon, LucideIcon] };
 	/** Situations in the client's words; tapping one shows the reply and the best next step. */
 	situations: { t: string; reply: string }[];
-	included: { t: string; d: string; motion?: MotionName }[];
+	included: { t: string; d: string }[];
 	receive: string[];
 	need: string[];
 	faqs: { q: string; a: string }[];
@@ -103,7 +103,7 @@ export const servicePages: Record<string, ServicePage> = {
 		headline: 'Stay licensed. Stay compliant. Keep growing.',
 		accent: 'Keep growing.',
 		motion: 'compliance',
-		heroKind: 'certs',
+		heroKind: 'video',
 		tool: 'licences',
 		line: 'We work out which licences and filings your business needs, file them, deal with the regulator and track every renewal.',
 		action: { label: 'Check which licences you need', href: a('regulatory-licensing-compliance') },
@@ -121,7 +121,7 @@ export const servicePages: Record<string, ServicePage> = {
 			{ t: 'SCUML and BPP registration', d: 'Anti-money-laundering registration with SCUML and contractor registration with the BPP.' },
 			{ t: 'PenCom, NSITF and ITF certificates', d: 'The staff-related certificates employers are expected to hold.' },
 			{ t: 'NDPA data-protection filing', d: 'Registration and filing under the Nigeria Data Protection Act where it applies to you.' },
-			{ t: 'Monthly compliance retainer', d: 'We keep every filing and renewal on track, month after month.', motion: 'compliance' },
+			{ t: 'Monthly compliance retainer', d: 'We keep every filing and renewal on track, month after month.' },
 		],
 		receive: ['Your licence or certificate', 'Filing receipts and acknowledgements', 'A compliance calendar with every due date', 'Status updates at each stage', 'Renewal reminders'],
 		need: ['Your CAC documents and TIN', 'What the business does and where it operates', 'Any licences you already hold', 'Your last filings, if any', 'A contact person for the regulator'],
@@ -143,7 +143,7 @@ export const servicePages: Record<string, ServicePage> = {
 		headline: 'Protect what you’ve built, in writing.',
 		accent: 'in writing.',
 		motion: 'contracts',
-		heroKind: 'icon',
+		heroKind: 'video',
 		tool: 'health',
 		line: 'Contracts that hold up, a brand that’s legally yours, and the policies investors and regulators expect.',
 		action: { label: 'Run the 30-second health-check', href: '#health-check' },
@@ -183,7 +183,7 @@ export const servicePages: Record<string, ServicePage> = {
 		headline: 'Plans investors read. Growth you can defend.',
 		accent: 'Growth you can defend.',
 		motion: 'growth',
-		heroKind: 'icon',
+		heroKind: 'video',
 		tool: 'goals',
 		line: 'We do the research, build the numbers and write the documents, so you walk into the meeting ready.',
 		action: { label: 'Pick your goal', href: '#goals' },
