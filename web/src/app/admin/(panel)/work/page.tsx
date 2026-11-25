@@ -9,8 +9,8 @@ import { Badge, DataTable, EmptyState } from '@/components/admin/bits';
 import { SelectField, TextAreaField, TextField } from '@/components/admin/fields';
 import { listWork } from '@/db/admin/work';
 import { homeServices } from '@/data/home';
-import { logoUrl } from '@/db/queries/work';
-import { builtinLogos, formatScope, workCategories } from '@/lib/work';
+import { certificateUrl, logoUrl } from '@/db/queries/work';
+import { builtinCertificates, builtinLogos, formatScope, workCategories } from '@/lib/work';
 import { deleteWorkAction, saveWork } from './actions';
 
 export const metadata: Metadata = { title: 'Work highlights' };
@@ -26,6 +26,8 @@ const statusOptions = [
 
 function WorkFields({ item }: { item?: Row }) {
 	const custom = item?.logo.startsWith('upload:');
+	const customCert = item?.certificate.startsWith('upload:');
+	const certOptions = [{ value: '', label: 'No image (use the drawn certificate)' }, ...(customCert ? [{ value: '__custom', label: 'Custom image (uploaded)' }] : []), ...builtinCertificates.map((c) => ({ value: c.key, label: c.label }))];
 	const logoOptions = [{ value: '', label: 'No logo' }, ...(custom ? [{ value: '__custom', label: 'Custom logo (uploaded)' }] : []), ...builtinLogos.map((l) => ({ value: l.key, label: l.label }))];
 	return (
 		<>
@@ -46,6 +48,10 @@ function WorkFields({ item }: { item?: Row }) {
 			<div className="grid gap-4 sm:grid-cols-2">
 				<SelectField name="logo" label="Regulator logo" defaultValue={custom ? '__custom' : (item?.logo ?? '')} options={logoOptions} />
 				<ImageField name="logo_image" label="Or upload a logo" currentUrl={custom && item ? logoUrl(item.logo) : undefined} hint="Optional. A transparent PNG or WebP works best. Replaces the logo chosen on the left." />
+			</div>
+			<div className="grid gap-4 sm:grid-cols-2">
+				<SelectField name="certificate" label="Certificate image" defaultValue={customCert ? '__custom' : (item?.certificate ?? '')} options={certOptions} hint="The real certificate shown on the website. Client names must already be blurred." />
+				<ImageField name="certificate_image" label="Or upload a certificate" currentUrl={customCert && item ? certificateUrl(item.certificate) : undefined} hint="Optional. A clear image with the client's name and numbers blurred." />
 			</div>
 			<SelectField name="status" label="Visibility" required defaultValue={item?.status ?? 'published'} options={statusOptions} />
 		</>

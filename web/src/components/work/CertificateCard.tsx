@@ -2,8 +2,16 @@ import { cn } from '@/lib/cn';
 import type { WorkItem } from '@/lib/work';
 
 /** Paper-style certificate preview. Never shows a client name. `size="sm"` is for gallery tiles. */
-export function CertificateCard({ c, size = 'lg', className }: { c: Pick<WorkItem, 'code' | 'kind' | 'body' | 'full' | 'logoUrl'>; size?: 'sm' | 'lg'; className?: string }) {
+export function CertificateCard({ c, size = 'lg', className }: { c: Pick<WorkItem, 'code' | 'kind' | 'body' | 'full' | 'logoUrl' | 'certificateUrl'>; size?: 'sm' | 'lg'; className?: string }) {
 	const sm = size === 'sm';
+	// A real certificate (client details already blurred in the image) is shown as it is.
+	if (c.certificateUrl) {
+		return (
+			<article className={cn('overflow-hidden rounded-card-sm bg-white p-2 shadow-2xl ring-1 ring-line', className)}>
+				<img src={c.certificateUrl} alt={`${c.code} certificate. Client details are blurred.`} loading="lazy" decoding="async" className={cn('mx-auto block h-auto w-auto max-w-full rounded-lg object-contain', sm ? 'max-h-[19rem]' : 'max-h-[34rem]')} />
+			</article>
+		);
+	}
 	return (
 		<article className={cn('rounded-card-sm bg-[#fffdf7] text-ink shadow-2xl', sm ? 'p-2.5' : 'p-3', className)}>
 			<div className={cn('rounded-xl border border-accent/30', sm ? 'p-5 sm:p-6' : 'p-8 sm:p-10')}>

@@ -14,6 +14,10 @@ import { ProofDeck } from './ProofDeck';
  */
 export async function WhyFwc() {
 	const [work, partners] = await Promise.all([getPublishedWork(), getPartners()]);
+	// The deck shows real certificates only: CAC, SCUML and NOGIC first, then any others.
+	const preferred = ['cac', 'scuml', 'nogic-jqs'];
+	const withImage = work.filter((w) => w.certificateUrl);
+	const deck = [...preferred.map((slug) => withImage.find((w) => w.slug === slug)).filter((w) => w !== undefined), ...withImage.filter((w) => !preferred.includes(w.slug))].slice(0, 5);
 	const counters = [
 		{ value: proofOverrides.secured ?? (work.length || null), label: 'registrations and licences secured' },
 		{ value: proofOverrides.regulators ?? (partners.length || null), label: 'regulators filed with' },
@@ -45,7 +49,7 @@ export async function WhyFwc() {
 					</ul>
 					<div className="mt-10"><Button href="/work" variant="light" size="lg">See our work</Button></div>
 				</div>
-				{work.length > 0 && <ProofDeck items={work.slice(0, 3)} />}
+				{deck.length > 0 && <ProofDeck items={deck} />}
 			</Container>
 		</section>
 	);

@@ -1,6 +1,6 @@
 import type { Role } from '@/lib/auth/roles';
 
-export type NavIcon = 'dashboard' | 'inbox' | 'posts' | 'work' | 'categories' | 'faqs' | 'testimonials' | 'partners' | 'subscribers' | 'users' | 'password';
+export type NavIcon = 'dashboard' | 'inbox' | 'posts' | 'work' | 'events' | 'categories' | 'faqs' | 'testimonials' | 'partners' | 'subscribers' | 'users' | 'password';
 export type NavItem = { href: string; label: string; icon: NavIcon; roles?: Role[] };
 export type NavGroup = { title: string; items: NavItem[] };
 
@@ -12,6 +12,7 @@ export const adminNav: NavGroup[] = [
 		title: 'Content',
 		items: [
 			{ href: '/admin/work', label: 'Work highlights', icon: 'work' },
+			{ href: '/admin/events', label: 'Events', icon: 'events' },
 			{ href: '/admin/blog', label: 'Blog posts', icon: 'posts' },
 			{ href: '/admin/blog-categories', label: 'Blog categories', icon: 'categories' },
 			{ href: '/admin/faqs', label: 'FAQs', icon: 'faqs' },

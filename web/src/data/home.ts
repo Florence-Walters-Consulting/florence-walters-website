@@ -1,5 +1,6 @@
 import { BadgeCheck, CalendarCheck, ChartNoAxesCombined, ClipboardList, FileCheck2, FileSignature, FileText, Handshake, Heart, Lock, Megaphone, PhoneCall, ShieldCheck, Stamp, Tag } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { MotionName } from '@/components/ui/MotionIcon';
 
 // Home page content, from the FWC Website Content Pack. Service slugs match data/services.ts.
 
@@ -50,14 +51,16 @@ export type HomeService = {
 	short: string;
 	icon: LucideIcon;
 	badge: LucideIcon;
+	/** Busola's animated icon for this service. */
+	motion: MotionName;
 };
 
 export const homeServices: HomeService[] = [
-	{ slug: 'business-formation-corporate-services', name: 'Business Setup & Corporate Services', short: 'Register the right structure and get bank-ready, from name search to certificate.', icon: Stamp, badge: FileCheck2 },
-	{ slug: 'regulatory-licensing-compliance', name: 'Regulatory Licences & Compliance', short: 'Every licence, filing and renewal your sector needs, tracked so nothing lapses.', icon: ShieldCheck, badge: CalendarCheck },
-	{ slug: 'contracts-ip-governance', name: 'Contracts, IP & Governance', short: "Contracts that hold up, a brand that's legally yours, and policies investors expect.", icon: FileSignature, badge: Lock },
-	{ slug: 'business-advisory-growth', name: 'Business Advisory & Growth', short: 'Business plans, investor packs, tenders and grant proposals that get read.', icon: ChartNoAxesCombined, badge: BadgeCheck },
-	{ slug: 'marketing', name: 'Marketing & Brand', short: 'Brand identity and social media that make you look as good as your work.', icon: Megaphone, badge: Heart },
+	{ slug: 'business-formation-corporate-services', name: 'Business Setup & Corporate Services', short: 'Register the right structure and get bank-ready, from name search to certificate.', icon: Stamp, badge: FileCheck2, motion: 'setup' },
+	{ slug: 'regulatory-licensing-compliance', name: 'Regulatory Licences & Compliance', short: 'Every licence, filing and renewal your sector needs, tracked so nothing lapses.', icon: ShieldCheck, badge: CalendarCheck, motion: 'compliance' },
+	{ slug: 'contracts-ip-governance', name: 'Contracts, IP & Governance', short: "Contracts that hold up, a brand that's legally yours, and policies investors expect.", icon: FileSignature, badge: Lock, motion: 'contracts' },
+	{ slug: 'business-advisory-growth', name: 'Business Advisory & Growth', short: 'Business plans, investor packs, tenders and grant proposals that get read.', icon: ChartNoAxesCombined, badge: BadgeCheck, motion: 'growth' },
+	{ slug: 'marketing', name: 'Marketing & Brand', short: 'Brand identity and social media that make you look as good as your work.', icon: Megaphone, badge: Heart, motion: 'marketing' },
 ];
 
 export type Step = { n: string; keyword: string; open: string; icon: LucideIcon };
@@ -89,9 +92,6 @@ export const proofOverrides: { secured: number | null; regulators: number | null
 	regulators: null,
 	businesses: null,
 };
-
-/** Webinar banner. Set `event` when a webinar is scheduled; until then the banner invites people to hear about the next one. */
-export const webinar: { event: { title: string; date: string; href: string } | null } = { event: null };
 
 export const homeFaqs = [
 	{ q: 'How do I get started?', a: 'Take the free assessment, then book your free 15-minute call.' },

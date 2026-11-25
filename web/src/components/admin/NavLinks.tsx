@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Award, BookOpenText, Building2, HelpCircle, Inbox, KeyRound, LayoutDashboard, Mail, Quote, ShieldCheck, Tags, type LucideIcon } from 'lucide-react';
+import { Award, BookOpenText, CalendarDays, Building2, HelpCircle, Inbox, KeyRound, LayoutDashboard, Mail, Quote, ShieldCheck, Tags, type LucideIcon } from 'lucide-react';
 import type { NavGroup, NavIcon } from './nav';
 
 const icons: Record<NavIcon, LucideIcon> = {
 	dashboard: LayoutDashboard,
 	inbox: Inbox,
 	work: Award,
+	events: CalendarDays,
 	posts: BookOpenText,
 	categories: Tags,
 	faqs: HelpCircle,

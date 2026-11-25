@@ -5,16 +5,17 @@ import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHead } from '@/components/ui/SectionHead';
 import { SiteLink } from '@/components/ui/SiteLink';
-import { homeFaqs, webinar } from '@/data/home';
+import { UpcomingEvents } from '@/components/events/UpcomingEvents';
+import { homeFaqs } from '@/data/home';
 import { getFeaturedBlogs } from '@/db/queries/blog';
 import { getFaqs } from '@/db/queries/content';
+import { getUpcomingEvents } from '@/db/queries/events';
 import { formatDate } from '@/lib/format';
 import { imageUrl } from '@/lib/images';
 
 /** Webinar banner, the two or three latest articles, and the FAQ. */
 export async function InsightsEvents() {
-	const [blogs, cms] = await Promise.all([getFeaturedBlogs(), getFaqs()]);
-	const event = webinar.event;
+	const [blogs, cms, events] = await Promise.all([getFeaturedBlogs(), getFaqs(), getUpcomingEvents()]);
 	// The FAQ is managed in the admin; the five questions from the content pack are the fallback.
 	const faqs = cms.length
 		? cms.slice(0, 6).map((f) => ({ id: String(f.id), title: f.question, content: <div className="space-y-3" dangerouslySetInnerHTML={{ __html: f.body }} /> }))
@@ -25,23 +26,25 @@ export async function InsightsEvents() {
 			<section id="insights" className="section-space">
 				<Container>
 					<Reveal>
-						<div className="flex flex-col gap-6 rounded-card bg-[linear-gradient(120deg,#6b68f7,#4a46d6)] p-7 text-white sm:flex-row sm:items-center sm:justify-between sm:p-9">
-							<div className="flex items-center gap-5">
-								<span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/20"><Mic className="size-6" /></span>
-								<div>
-									<p className="text-xs font-bold tracking-[0.16em] text-white/75 uppercase">Free webinar</p>
-									<p className="mt-1 text-xl leading-snug font-bold sm:text-2xl">
-										{event ? <>{event.title} · {event.date}</> : 'Practical sessions for business owners. Hear about the next one first.'}
-									</p>
+						{events.length > 0 ? (
+							<UpcomingEvents events={events} />
+						) : (
+							<div className="flex flex-col gap-6 rounded-card bg-[linear-gradient(120deg,#6b68f7,#4a46d6)] p-7 text-white sm:flex-row sm:items-center sm:justify-between sm:p-9">
+								<div className="flex items-center gap-5">
+									<span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/20"><Mic className="size-6" /></span>
+									<div>
+										<p className="text-xs font-bold tracking-[0.16em] text-white/75 uppercase">Webinars</p>
+										<p className="mt-1 text-xl leading-snug font-bold sm:text-2xl">Practical sessions for business owners. Hear about the next one first.</p>
+									</div>
 								</div>
+								<Button href="#newsletter" variant="light" className="shrink-0 bg-white text-ink hover:bg-mist [&>span:last-child]:bg-ink [&>span:last-child]:text-white">Get notified</Button>
 							</div>
-							<Button href={event?.href ?? '#newsletter'} variant="light" className="shrink-0 bg-white text-ink hover:bg-mist [&>span:last-child]:bg-ink [&>span:last-child]:text-white">{event ? 'Register' : 'Get notified'}</Button>
-						</div>
+						)}
 					</Reveal>
 
 					{blogs.length > 0 && (
 						<>
-							<SectionHead className="mt-16" label="Insights & events" title="Fresh thinking for growing businesses." />
+							<SectionHead className="mt-16" label="Insights" title="Fresh thinking for growing businesses." />
 							<ul className="mt-10 grid gap-5 md:grid-cols-3">
 								{blogs.slice(0, 3).map((b, i) => (
 									<Reveal as="li" key={b.id} delay={i * 0.05}>

@@ -1,4 +1,4 @@
-import { mysqlTable, primaryKey, int, varchar, index, mediumtext, unique, timestamp, json, text } from "drizzle-orm/mysql-core"
+import { mysqlTable, primaryKey, int, varchar, index, mediumtext, unique, timestamp, json, text, datetime } from "drizzle-orm/mysql-core"
 
 
 export const admin = mysqlTable("admin", {
@@ -248,6 +248,7 @@ export const workHighlights = mysqlTable("work_highlights", {
 	body: varchar({ length: 150 }).notNull(),
 	title: varchar({ length: 255 }).notNull(),
 	logo: varchar({ length: 100 }).default('').notNull(),
+	certificate: varchar({ length: 100 }).default('').notNull(),
 	category: varchar({ length: 40 }).notNull(),
 	summary: varchar({ length: 400 }).default('').notNull(),
 	scope: json().$type<{ t: string; d: string }[]>().notNull(),
@@ -262,4 +263,28 @@ export const workHighlights = mysqlTable("work_highlights", {
 	unique("uq_work_slug").on(table.slug),
 	index("idx_work_status_order").on(table.status, table.sortOrder),
 	primaryKey({ columns: [table.id], name: "work_highlights_id"}),
+]);
+
+/** Events and webinars (see db/migrations/009_certificates_events.sql). Times are Lagos time (WAT, UTC+1). */
+export const events = mysqlTable("events", {
+	id: int().autoincrement().notNull(),
+	slug: varchar({ length: 100 }).notNull(),
+	title: varchar({ length: 200 }).notNull(),
+	summary: varchar({ length: 400 }).default('').notNull(),
+	body: mediumtext().notNull(),
+	bullets: json().$type<string[]>().notNull(),
+	startsAt: datetime("starts_at", { mode: 'string' }).notNull(),
+	endsAt: datetime("ends_at", { mode: 'string' }).notNull(),
+	venue: varchar({ length: 150 }).default('Virtual').notNull(),
+	registerUrl: varchar("register_url", { length: 500 }).default('').notNull(),
+	hashtags: varchar({ length: 200 }).default('').notNull(),
+	image: varchar({ length: 150 }).default('').notNull(),
+	status: varchar({ length: 10 }).default('published').notNull(),
+	createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'date' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	unique("uq_event_slug").on(table.slug),
+	index("idx_event_status_start").on(table.status, table.startsAt),
+	primaryKey({ columns: [table.id], name: "events_id"}),
 ]);

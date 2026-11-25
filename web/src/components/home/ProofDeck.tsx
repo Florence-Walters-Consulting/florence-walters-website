@@ -7,39 +7,59 @@ import type { WorkItem } from '@/lib/work';
 
 const AUTO_MS = 4000;
 
-// Where a certificate sits in the deck, by how far it is from the front.
-const pose = [
+// Stacked: where a certificate sits by how far it is from the front. Fanned: spread out so all can be seen.
+const stacked = [
 	{ x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 },
-	{ x: 26, y: 20, rotate: 3, scale: 0.955, opacity: 1 },
-	{ x: -22, y: 36, rotate: -3, scale: 0.91, opacity: 0.9 },
+	{ x: 34, y: 18, rotate: 4, scale: 0.94, opacity: 1 },
+	{ x: -30, y: 34, rotate: -4, scale: 0.88, opacity: 0.95 },
 ];
-const hidden = { x: 0, y: 56, rotate: 0, scale: 0.87, opacity: 0 };
+const fanned = [
+	{ x: 0, y: -14, rotate: 0, scale: 1, opacity: 1 },
+	{ x: 170, y: 30, rotate: 9, scale: 0.9, opacity: 1 },
+	{ x: -170, y: 30, rotate: -9, scale: 0.9, opacity: 1 },
+];
+const hidden = { x: 0, y: 56, rotate: 0, scale: 0.8, opacity: 0 };
 
-/** One to three real certificates (client names are never shown) that swap slowly, every 4 s. Pauses on hover or focus. */
+/**
+ * Real (blurred) certificates, stacked. The front one swaps every 4 s; hover, focus or tap fans all of them out so they can be
+ * read side by side. Names are blurred in the images themselves.
+ */
 export function ProofDeck({ items }: { items: WorkItem[] }) {
 	const n = items.length;
 	const [active, setActive] = useState(0);
-	const [paused, setPaused] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		if (n < 2 || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		if (n < 2 || open || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 		const id = window.setInterval(() => setActive((i) => (i + 1) % n), AUTO_MS);
 		return () => window.clearInterval(id);
-	}, [paused, n]);
+	}, [open, n]);
 
 	return (
-		<div className="mx-auto w-full max-w-md" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
-			<div className="grid pt-3 pr-7 pb-12" aria-live="off">
+		<div className="mx-auto w-full max-w-xl">
+			<button
+				type="button"
+				aria-expanded={open}
+				aria-label="Real certificates secured for our clients. Press to spread them out."
+				onMouseEnter={() => setOpen(true)}
+				onMouseLeave={() => setOpen(false)}
+				onFocus={() => setOpen(true)}
+				onBlur={() => setOpen(false)}
+				onClick={() => setOpen((o) => !o)}
+				className="relative block h-[22rem] w-full cursor-pointer sm:h-[26rem]">
 				{items.map((c, i) => {
 					const depth = (i - active + n) % n;
+					const pose = depth < 3 ? (open ? fanned[depth] : stacked[depth]) : hidden;
 					return (
-						<m.div key={c.code} className="col-start-1 row-start-1" style={{ zIndex: n - depth, transformOrigin: 'bottom center' }} initial={false} animate={depth < pose.length ? pose[depth] : hidden} transition={{ type: 'spring', stiffness: 130, damping: 20, mass: 0.9 }} aria-hidden={depth !== 0}>
-							<CertificateCard c={c} />
-						</m.div>
+						<span key={c.slug} className="absolute inset-0 grid place-items-center" style={{ zIndex: n - depth }}>
+							<m.span className="block w-[62%] sm:w-[58%]" initial={false} animate={pose} transition={{ type: 'spring', stiffness: 120, damping: 19, mass: 0.9 }} aria-hidden={depth !== 0 && !open}>
+								<CertificateCard c={c} size="sm" className="[&_img]:max-h-[19rem] sm:[&_img]:max-h-[22rem]" />
+							</m.span>
+						</span>
 					);
 				})}
-			</div>
-			<p className="text-center text-sm text-white/65">Real certificates secured for our clients. Names hidden to protect their privacy.</p>
+			</button>
+			<p className="mt-2 text-center text-sm text-white/65">Real certificates secured for our clients. Names hidden to protect their privacy. <span className="text-white/90">Tap to spread them out.</span></p>
 		</div>
 	);
 }

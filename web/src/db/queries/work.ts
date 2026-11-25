@@ -18,6 +18,13 @@ export function logoUrl(logo: string): string | undefined {
 	return `/media/regulators/${logo}.webp`;
 }
 
+/** '' | built-in key | upload:<file> -> an image URL of the real certificate. */
+export function certificateUrl(certificate: string): string | undefined {
+	if (!certificate) return undefined;
+	if (certificate.startsWith('upload:')) return imageUrl('work', certificate.slice(7));
+	return `/media/certificates/${certificate}.webp`;
+}
+
 /** Published highlights, in the order set in the admin (newest first within equal order). */
 export async function getPublishedWork(): Promise<WorkItem[]> {
 	'use cache';
@@ -35,6 +42,7 @@ export async function getPublishedWork(): Promise<WorkItem[]> {
 		body: r.body,
 		full: r.title,
 		logoUrl: logoUrl(r.logo),
+		certificateUrl: certificateUrl(r.certificate),
 		category: r.category,
 		summary: r.summary,
 		scope: r.scope.length ? r.scope : standardSteps(r.serviceSlug),

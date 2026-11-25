@@ -13,12 +13,28 @@ export type WorkItem = {
 	full: string;
 	/** Ready-to-use image URL for the regulator's logo, if any. */
 	logoUrl?: string;
+	/** Ready-to-use image URL of the real (blurred) certificate, if we have one. */
+	certificateUrl?: string;
 	category: WorkCategory;
 	summary: string;
 	scope: WorkStep[];
 	receive: string[];
 	service: { slug: string; name: string };
 };
+
+/** Real (blurred) certificates we hold (public/media/certificates/<key>.webp). */
+export const builtinCertificates: { key: string; label: string }[] = [
+	{ key: 'cac', label: 'CAC Certificate of Incorporation' },
+	{ key: 'scuml', label: 'SCUML Certificate' },
+	{ key: 'bpp', label: 'BPP registration (IRR)' },
+	{ key: 'tax-clearance', label: 'Tax Clearance Certificate' },
+	{ key: 'itf', label: 'ITF Certificate of Compliance' },
+	{ key: 'nogic-jqs', label: 'NOGIC JQS Certificate' },
+	{ key: 'nogic-consultancy', label: 'NOGIC JQS (Consultancy)' },
+	{ key: 'ndpc-audit', label: 'NDPC audit filing' },
+	{ key: 'nsitf', label: 'NSITF ECS Clearance' },
+	{ key: 'nuprc', label: 'NUPRC Permit' },
+];
 
 /** Logos we already hold for regulators (public/media/regulators/<key>.webp). */
 export const builtinLogos: { key: string; label: string }[] = [

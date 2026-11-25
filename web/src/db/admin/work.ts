@@ -10,6 +10,7 @@ export type WorkValues = {
 	body: string;
 	title: string;
 	logo: string;
+	certificate: string;
 	category: string;
 	summary: string;
 	scope: { t: string; d: string }[];

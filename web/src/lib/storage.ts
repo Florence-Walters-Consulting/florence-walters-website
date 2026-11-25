@@ -10,6 +10,7 @@ export const UPLOAD_FOLDERS = [
 	'partners',
 	'summernote',
 	'work',
+	'events',
 ] as const;
 export type UploadFolder = (typeof UPLOAD_FOLDERS)[number];
 
