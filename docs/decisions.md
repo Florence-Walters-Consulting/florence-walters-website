@@ -305,3 +305,5 @@ Source: "FWC Website Content Pack" (PDF) plus the team's notes. What changed and
 - **Hero art per service**: Setup and Marketing use Busola's hero animations, Licences uses the real-certificate showcase (her compliance animation sits in "What's included"), Contracts and Advisory use the animated icon with documents fanned behind it.
 - **Brand film** is on the About page, click-to-play (no autoplay, no sound until the visitor chooses).
 - The phone number is +234 902 473 1905 (code default; set `NEXT_PUBLIC_COMPANY_PHONE` in each environment).
+
+- **Logo, correction**: the site uses the version without the "Structure, Strategy & Excellence" line (the secondary logo): `brand/logo.svg` on light backgrounds, `brand/logo-white.svg` on navy (header, footer, admin).
