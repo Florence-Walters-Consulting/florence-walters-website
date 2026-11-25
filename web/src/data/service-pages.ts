@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import type { MotionName } from '@/components/ui/MotionIcon';
 import { BadgeCheck, CalendarCheck, ChartNoAxesCombined, FileCheck2, FileSignature, Heart, Lock, Megaphone, ShieldCheck, Stamp } from 'lucide-react';
 
 /**
@@ -10,13 +11,20 @@ export type ServicePage = {
 	slug: string;
 	name: string;
 	headline: string;
+	/** The closing phrase of the headline that shimmers. Must be the end of `headline`. */
+	accent: string;
 	line: string;
+	/** Busola's animated graphics: the icon video, how the hero is built, and the page's signature tool. */
+	motion: MotionName;
+	heroKind: 'video' | 'certs' | 'icon';
+	tool: 'structure' | 'licences' | 'health' | 'goals' | 'brand';
 	/** The service-specific action (a short form, a check, a goal picker). */
 	action: { label: string; href: string };
 	/** 3D art in the hero: two document titles and two small floating tiles. */
 	art: { icon: LucideIcon; badge: LucideIcon; docs: [string, string]; tiles: [LucideIcon, LucideIcon] };
-	forYou: string[];
-	included: { t: string; d: string }[];
+	/** Situations in the client's words; tapping one shows the reply and the best next step. */
+	situations: { t: string; reply: string }[];
+	included: { t: string; d: string; motion?: MotionName }[];
 	receive: string[];
 	need: string[];
 	faqs: { q: string; a: string }[];
@@ -28,19 +36,17 @@ export type ServicePage = {
 	honest?: string;
 	notIncluded?: string;
 	addOn?: string;
-	/** Interactive extras kept from the previous site: the contracts health-check and the advisory goal tiles. */
-	extra?: 'healthcheck' | 'goals';
 };
 
 const a = (slug: string, query = '') => `/business-assessment?service=${slug}${query}`;
 
 export const goals = [
-	{ key: 'raise', label: 'Raise investment', value: 'Raising investment or funding' },
-	{ key: 'enter', label: 'Enter Nigeria', value: 'Entering a new market or region' },
-	{ key: 'operations', label: 'Fix operations', value: 'Improving internal operations' },
-	{ key: 'tender', label: 'Win a tender', value: 'Preparing for a bid or tender' },
-	{ key: 'grant', label: 'Win a grant', value: 'Applying for a grant (NGOs)' },
-	{ key: 'plan', label: 'Write a business plan', value: 'Writing a formal business plan' },
+	{ key: 'raise', label: 'Raise investment', value: 'Raising investment or funding', gets: ['Investor deck', 'Financial model', 'Data room', 'Cap table'] },
+	{ key: 'enter', label: 'Enter Nigeria', value: 'Entering a new market or region', gets: ['Market entry strategy', 'Registration roadmap'] },
+	{ key: 'operations', label: 'Fix operations', value: 'Improving internal operations', gets: ['Operational review', 'Process improvement plan'] },
+	{ key: 'tender', label: 'Win a tender', value: 'Preparing for a bid or tender', gets: ['Bid document', 'Compliance checklist'] },
+	{ key: 'grant', label: 'Win a grant', value: 'Applying for a grant (NGOs)', gets: ['Grant proposal', 'Budget and work plan'] },
+	{ key: 'plan', label: 'Write a business plan', value: 'Writing a formal business plan', gets: ['Business plan', 'Financial projections'] },
 ] as const;
 
 export const healthCheckItems = [
@@ -58,14 +64,18 @@ export const servicePages: Record<string, ServicePage> = {
 		slug: 'business-formation-corporate-services',
 		name: 'Business Setup & Corporate Services',
 		headline: 'The right structure, registered properly, ready for the bank.',
+		accent: 'ready for the bank.',
+		motion: 'setup',
+		heroKind: 'video',
+		tool: 'structure',
 		line: 'We help you choose your structure, register it with the CAC and hand you a complete, bank-ready document pack.',
 		action: { label: 'Start your registration', href: a('business-formation-corporate-services') },
 		art: { icon: Stamp, badge: FileCheck2, docs: ['Certificate of incorporation', 'Memorandum & Articles'], tiles: [BadgeCheck, ShieldCheck] },
-		forYou: [
-			"You're starting out or trading informally",
-			'Your Business Name needs to become a company',
-			"You're forming an NGO or foundation",
-			"You're a foreign company setting up in Nigeria",
+		situations: [
+			{ t: "You're starting out or trading informally", reply: 'Start with a Business Name or a company. We help you choose, register it and hand you a bank-ready pack.' },
+			{ t: 'Your Business Name needs to become a company', reply: 'We register the company and guide the move from your Business Name, including your TIN and bank details.' },
+			{ t: "You're forming an NGO or foundation", reply: 'That is an Incorporated Trustees registration with the CAC. We prepare the constitution and file it.' },
+			{ t: "You're a foreign company setting up in Nigeria", reply: 'We handle foreign company registration, and tell you what else you need before you can trade.' },
 		],
 		included: [
 			{ t: 'Company registration', d: 'We help you choose the right structure, then register it: Business Name, Ltd, Ltd/Gte, Incorporated Trustees (NGO), LP/LLP or a foreign company.' },
@@ -91,14 +101,18 @@ export const servicePages: Record<string, ServicePage> = {
 		slug: 'regulatory-licensing-compliance',
 		name: 'Regulatory Licences & Compliance',
 		headline: 'Stay licensed. Stay compliant. Keep growing.',
+		accent: 'Keep growing.',
+		motion: 'compliance',
+		heroKind: 'certs',
+		tool: 'licences',
 		line: 'We work out which licences and filings your business needs, file them, deal with the regulator and track every renewal.',
 		action: { label: 'Check which licences you need', href: a('regulatory-licensing-compliance') },
 		art: { icon: ShieldCheck, badge: CalendarCheck, docs: ['Licence certificate', 'Compliance calendar'], tiles: [BadgeCheck, Stamp] },
-		forYou: [
-			"You don't know which licences you need",
-			"You know but haven't started",
-			"You're licensed but not sure you're fully compliant",
-			"You're behind on annual returns or tax",
+		situations: [
+			{ t: "You don't know which licences you need", reply: 'Try the licence finder just below: pick your sector and see what usually applies.' },
+			{ t: "You know but haven't started", reply: 'Tell us which ones. We file them, follow up with the regulator and track every renewal.' },
+			{ t: "You're licensed but not sure you're fully compliant", reply: 'We check what you hold against what your sector expects, then close the gaps.' },
+			{ t: "You're behind on annual returns or tax", reply: 'We file what is outstanding and bring you back into good standing.' },
 		],
 		included: [
 			{ t: 'CAC annual returns', d: 'Every company files every year. We file what is due and any years that were missed.' },
@@ -107,7 +121,7 @@ export const servicePages: Record<string, ServicePage> = {
 			{ t: 'SCUML and BPP registration', d: 'Anti-money-laundering registration with SCUML and contractor registration with the BPP.' },
 			{ t: 'PenCom, NSITF and ITF certificates', d: 'The staff-related certificates employers are expected to hold.' },
 			{ t: 'NDPA data-protection filing', d: 'Registration and filing under the Nigeria Data Protection Act where it applies to you.' },
-			{ t: 'Monthly compliance retainer', d: 'We keep every filing and renewal on track, month after month.' },
+			{ t: 'Monthly compliance retainer', d: 'We keep every filing and renewal on track, month after month.', motion: 'compliance' },
 		],
 		receive: ['Your licence or certificate', 'Filing receipts and acknowledgements', 'A compliance calendar with every due date', 'Status updates at each stage', 'Renewal reminders'],
 		need: ['Your CAC documents and TIN', 'What the business does and where it operates', 'Any licences you already hold', 'Your last filings, if any', 'A contact person for the regulator'],
@@ -127,14 +141,18 @@ export const servicePages: Record<string, ServicePage> = {
 		slug: 'contracts-ip-governance',
 		name: 'Contracts, IP & Governance',
 		headline: 'Protect what you’ve built, in writing.',
+		accent: 'in writing.',
+		motion: 'contracts',
+		heroKind: 'icon',
+		tool: 'health',
 		line: 'Contracts that hold up, a brand that’s legally yours, and the policies investors and regulators expect.',
 		action: { label: 'Run the 30-second health-check', href: '#health-check' },
 		art: { icon: FileSignature, badge: Lock, docs: ['Service agreement', 'Privacy policy'], tiles: [BadgeCheck, ShieldCheck] },
-		forYou: [
-			'You work on WhatsApp agreements',
-			'Your staff have no written contracts',
-			'An investor or partner is doing due diligence',
-			'You hold customer data or handle money',
+		situations: [
+			{ t: 'You work on WhatsApp agreements', reply: 'We turn them into proper written agreements that say what you actually agreed.' },
+			{ t: 'Your staff have no written contracts', reply: 'We draft employment contracts and a short staff handbook.' },
+			{ t: 'An investor or partner is doing due diligence', reply: 'We check your agreements and policies and close the gaps first. Try the health-check below.' },
+			{ t: 'You hold customer data or handle money', reply: 'You need an NDPA privacy policy and data map, and an AML/CFT policy if you handle money.' },
 		],
 		included: [
 			{ t: 'Contract drafting and review', d: 'Agreements written or checked so they say what you mean and protect you.' },
@@ -148,7 +166,6 @@ export const servicePages: Record<string, ServicePage> = {
 		receive: ['Signed agreements and editable templates', 'A marked-up review with a plain-English summary', 'Trademark filing and certificate', 'Privacy and governance policies'],
 		need: ['What you want protected', 'Any existing agreements or drafts', 'Names and details of the parties', 'A description of the data you collect', 'Your logo and business name'],
 		legalNote: 'Legal advice is provided through our partner lawyers. Court cases are outside our scope.',
-		extra: 'healthcheck',
 		faqs: [
 			{ q: 'Can you review a contract I have been sent?', a: 'Yes. You get a marked-up copy and a plain-English summary of the risks and what to push back on.' },
 			{ q: 'Do I really need a trademark?', a: 'If your name or logo matters to your business, yes. Registration is what makes it legally yours.' },
@@ -164,14 +181,18 @@ export const servicePages: Record<string, ServicePage> = {
 		slug: 'business-advisory-growth',
 		name: 'Business Advisory & Growth',
 		headline: 'Plans investors read. Growth you can defend.',
+		accent: 'Growth you can defend.',
+		motion: 'growth',
+		heroKind: 'icon',
+		tool: 'goals',
 		line: 'We do the research, build the numbers and write the documents, so you walk into the meeting ready.',
 		action: { label: 'Pick your goal', href: '#goals' },
 		art: { icon: ChartNoAxesCombined, badge: BadgeCheck, docs: ['Business plan', 'Investor pack'], tiles: [FileCheck2, Stamp] },
-		forYou: [
-			'Investors keep asking for things you don’t have',
-			'You want to enter Nigeria properly',
-			"You're busy but things don't feel under control",
-			'A tender or grant deadline is coming',
+		situations: [
+			{ t: 'Investors keep asking for things you don’t have', reply: 'We build the deck, model, data room and cap table, so you are ready before the meeting.' },
+			{ t: 'You want to enter Nigeria properly', reply: 'We prepare a market entry strategy and the registrations you will need.' },
+			{ t: "You're busy but things don't feel under control", reply: 'An operational review finds what slows you down, then we fix it.' },
+			{ t: 'A tender or grant deadline is coming', reply: 'We prepare the bid or proposal and check it before you submit.' },
 		],
 		included: [
 			{ t: 'Business plans and financial projections', d: 'A plan and numbers that explain your business clearly and stand up to questions.' },
@@ -186,7 +207,6 @@ export const servicePages: Record<string, ServicePage> = {
 		receive: ['Finished, editable documents: plan, model, deck, proposal or report', 'A PDF set', 'A handover walkthrough'],
 		need: ['What you want to achieve and by when', 'Any existing plan, financials or deck', 'Access to the person who knows the numbers', 'Details of the tender, grant or investor if there is one'],
 		honest: "We prepare you for investors and funders. We don't promise a raise or a win.",
-		extra: 'goals',
 		faqs: [
 			{ q: 'Will you guarantee we raise money or win the tender?', a: "No. We prepare you properly for investors and funders, but we don't promise a raise or a win." },
 			{ q: 'Do you write the documents or just advise?', a: 'We write them. You receive finished, editable documents and a walkthrough.' },
@@ -202,14 +222,18 @@ export const servicePages: Record<string, ServicePage> = {
 		slug: 'marketing',
 		name: 'Marketing & Brand',
 		headline: 'Look as good as your work really is.',
+		accent: 'really is.',
+		motion: 'marketing',
+		heroKind: 'video',
+		tool: 'brand',
 		line: 'We build your brand and run your social media, from the first logo to the monthly report.',
 		action: { label: 'Get a brand check', href: a('marketing') },
 		art: { icon: Megaphone, badge: Heart, docs: ['Brand guidelines', 'Content calendar'], tiles: [BadgeCheck, FileCheck2] },
-		forYou: [
-			"You're new and not online yet",
-			'You post when you remember',
-			'People like your posts but nobody enquires',
-			'Your business has outgrown its look',
+		situations: [
+			{ t: "You're new and not online yet", reply: 'We build your brand and set up your first month of content.' },
+			{ t: 'You post when you remember', reply: 'We plan and publish for you, on a monthly calendar you approve.' },
+			{ t: 'People like your posts but nobody enquires', reply: 'We rework what you post and how people reach you.' },
+			{ t: 'Your business has outgrown its look', reply: 'A refreshed identity and guidelines, applied across your channels.' },
 		],
 		included: [
 			{ t: 'Brand identity', d: 'A logo, colours and guidelines so your business looks like one business everywhere.' },

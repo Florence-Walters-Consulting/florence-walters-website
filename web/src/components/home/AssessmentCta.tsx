@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
+import { FloatingShapes } from '@/components/ui/FloatingShapes';
 import { Reveal } from '@/components/ui/Reveal';
 
 /** The closing Electric Blue band. Pass a `serviceSlug`-aware `href` from a service page to skip the "which service?" question. */
@@ -9,8 +10,9 @@ export function AssessmentCta({
 	href = '/business-assessment',
 }: { title?: string; text?: string; href?: string } = {}) {
 	return (
-		<section id="assessment" className="bg-accent-btn text-white">
-			<Container className="py-16 sm:py-20">
+		<section id="assessment" className="relative isolate overflow-hidden bg-accent-btn text-white">
+			<FloatingShapes />
+			<Container className="relative py-16 sm:py-20">
 				<Reveal className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
 					<div className="max-w-2xl">
 						<h2 className="text-title">{title}</h2>

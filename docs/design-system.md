@@ -29,9 +29,15 @@ Set by the FWC Website Content Pack: **a modern consultancy, not a law firm.**
 - Reduced motion: no auto-advance, no video (the poster image shows), numbers show their final value.
 
 ## Primitives (`@/components/ui/*`)
-`Button`, `Container`, `SectionHead`, `Accordion` (Radix), `Carousel` (Embla), `Marquee`, `Reveal`, `CountUp`, `ReadMore`, `Icon3D` (CSS 3D tile; pass `src` to use a designer's own artwork), `DocMock` (generic document, never a client name), `Scene3D` (hero art), `PageHero`, `HeroVideo`, `SocialIcons`, `SmoothScroll` (Lenis), `MotionProvider`.
+`Button`, `Container`, `SectionHead`, `MotionIcon` (Busola's animated icons and hero graphics; transparent WebM, MP4 for Safari, still frame for reduced motion or data saver), `TiltStage` (hero art that tilts toward the pointer), `FloatingShapes` (floating 3D tiles in the right half of a band), `AutoTabs` (the auto-advancing tabs + animated stage), `FanDeck` (pile that fans out on hover or tap), `Ring`, `BrandFilm` (click-to-play), `Accordion` (Radix), `Carousel` (Embla), `Marquee`, `Reveal`, `CountUp`, `ReadMore`, `Icon3D` (CSS 3D tile; pass `src` to use a designer's own artwork), `DocMock` (generic document, never a client name), `Scene3D` (hero art), `PageHero`, `HeroVideo`, `SocialIcons`, `SmoothScroll` (Lenis), `MotionProvider`.
 
 ## Performance rules
 - Motion loads lazily (`LazyMotion` + `domAnimation`); `MotionConfig reducedMotion="user"` is on.
 - Video: WebM only, no audio, poster first, pauses off-screen and in hidden tabs.
 - Images: WebP from `scripts/optimize-media.sh`, rendered with `next/image`. Animate `transform` and `opacity` only.
+
+## Liveliness (Busola's definition, round two)
+Her concept page set the bar: floating shapes behind the final band, auto-advancing "how it works" scenes, a certificate pile that fans out, hero art that tilts. The same ideas are used on every service page without adding length: each interaction replaces a static block.
+- Service page blocks: animated hero, tap-to-match situations, one signature tool (structure picker, licence finder, health-check ring, goal explorer, brand check), auto-advancing "what's included" stage, a fan-out document pile with a readiness ring, a floating-shapes "next step" band.
+- `MotionIcon play="hover"` is used on card rows so five videos never play together; `play="visible"` is for heroes and stages (plays only on screen).
+- Media: motion graphics in `public/media/motion`, certificates in `public/media/certificates` (blurred originals; the website never shows a client name), events flyers in `public/media/events`, logos in `public/brand` (SVG with the background rectangle removed).

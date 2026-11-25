@@ -8,7 +8,7 @@ export const media = {
 	heroStructure: { poster: '/media/video/hero-structure.webp', video: '/media/video/hero-structure.webm' }, // signing papers
 	heroStrategy: { poster: '/media/video/hero-strategy.webp', video: '/media/video/hero-strategy.webm' }, // team with charts
 	heroExcellence: { poster: '/media/video/hero-excellence.webp', video: '/media/video/hero-excellence.webm' }, // team at a table
-	about: '/media/images/client-documents-laptop.webp',
+	brandFilm: { poster: '/media/video/brand-film.webp', video: '/media/video/brand-film.mp4' },
 	aboutStory: '/media/images/contract-review-hands.webp',
 	lagos: '/media/images/lagos-office-building.webp',
 } as const;

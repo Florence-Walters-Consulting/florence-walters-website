@@ -5,8 +5,7 @@ export const serviceMenu = homeServices.map((s) => ({
 	name: s.name,
 	short: s.short,
 	href: `/services/${s.slug}`,
-	icon: s.icon,
-	badge: s.badge,
+	motion: s.motion,
 }));
 
 /** Main navigation. "Services" opens the mega-menu; the rest are plain links. */

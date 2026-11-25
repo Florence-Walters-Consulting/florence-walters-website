@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ArrowRight } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
-import { Icon3D } from '@/components/ui/Icon3D';
+import { MotionIcon } from '@/components/ui/MotionIcon';
 import { PageHero } from '@/components/ui/PageHero';
 import { Reveal } from '@/components/ui/Reveal';
 import { Scene3D } from '@/components/ui/Scene3D';
@@ -32,9 +32,9 @@ export default function ServicesIndex() {
 					<ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
 						{homeServices.map((s, i) => (
 							<Reveal as="li" key={s.slug} delay={i * 0.04}>
-								<SiteLink href={`/services/${s.slug}`} className="group float-on-hover flex h-full flex-col rounded-card border border-line bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[var(--shadow-soft)]">
-									<Icon3D icon={s.icon} badge={s.badge} size={76} />
-									<h2 className="mt-8 text-2xl leading-snug font-bold">{s.name}</h2>
+								<SiteLink href={`/services/${s.slug}`} data-motion-host className="group lift3d flex h-full flex-col rounded-card border border-line bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[var(--shadow-soft)]">
+									<MotionIcon name={s.motion} play="hover" size={116} className="-mt-2 -ml-2" />
+									<h2 className="mt-5 text-2xl leading-snug font-bold">{s.name}</h2>
 									<p className="mt-3 text-ink-soft">{s.short}</p>
 									<p className="mt-5 text-xs font-semibold tracking-[0.14em] text-ink-mute uppercase">You receive</p>
 									<ul className="mt-2 grid gap-1 text-[0.9375rem]">

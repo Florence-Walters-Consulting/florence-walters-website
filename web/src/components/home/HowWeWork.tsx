@@ -1,65 +1,24 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { ClipboardList, MessageSquareQuote } from 'lucide-react';
+import { AutoTabs } from '@/components/ui/AutoTabs';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Icon3D } from '@/components/ui/Icon3D';
 import { SectionHead } from '@/components/ui/SectionHead';
-import { cn } from '@/lib/cn';
 import { steps } from '@/data/home';
+import { HowScene } from './HowWeWorkScenes';
 
 /**
- * Five steps in one horizontal row of equal-height cards: an icon, a few words and one sentence each. Tapping a card
- * highlights it. When the row first scrolls into view the steps light up in order. Under it, two ways to begin.
+ * Five steps as Busola's auto-advancing tabs: the open step reads its sentence and a bar fills over 6 s before the next opens, while
+ * an animated scene plays on the right. Choosing a step takes over from the timer. Under it, two ways to begin.
  */
 export function HowWeWork() {
-	const [active, setActive] = useState(0);
-	const [lit, setLit] = useState(0);
-	const root = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		const el = root.current;
-		if (!el) return;
-		// Reduced motion: every step is shown lit from the start (see the motion-reduce class below).
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-		const timers: number[] = [];
-		const io = new IntersectionObserver(([e]) => {
-			if (!e.isIntersecting) return;
-			io.disconnect();
-			steps.forEach((_, i) => timers.push(window.setTimeout(() => setLit(i + 1), 300 + i * 350)));
-		}, { threshold: 0.5 });
-		io.observe(el);
-		return () => {
-			io.disconnect();
-			timers.forEach(window.clearTimeout);
-		};
-	}, []);
-
 	return (
 		<section id="how-we-work" className="section-space bg-mist">
 			<Container>
 				<SectionHead label="How we work" title="From first click to signed agreement, in five steps." />
-
-				<div ref={root} role="tablist" aria-label="Steps" className="-mx-5 mt-12 flex snap-x items-stretch gap-3 overflow-x-auto px-5 pb-3 sm:mx-0 sm:grid sm:grid-cols-5 sm:items-stretch sm:overflow-visible sm:px-0">
-					{steps.map((s, i) => {
-						const open = i === active;
-						return (
-							<button
-								key={s.n}
-								type="button"
-								role="tab"
-								aria-selected={open}
-																onClick={() => setActive(i)}
-								className={cn('float-on-hover group flex min-w-[15rem] shrink-0 snap-start flex-col rounded-card-sm border bg-white p-5 text-left transition-all duration-400 sm:min-w-0', open ? 'border-accent shadow-[var(--shadow-soft)]' : 'border-line hover:border-accent/40', i < lit ? 'opacity-100' : 'opacity-40 motion-reduce:opacity-100')}>
-								<span className="text-xs font-bold tracking-[0.16em] text-accent-deep">{s.n}</span>
-								<span className="mt-3 block"><Icon3D icon={s.icon} size={52} tone={open ? 'blue' : 'white'} /></span>
-								<span className="mt-5 block text-[1.0625rem] leading-snug font-bold">{s.keyword}</span>
-								<span className={cn('mt-3 block text-[0.9375rem] leading-relaxed font-normal transition-colors', open ? 'text-ink' : 'text-ink-soft')}>{s.open}</span>
-							</button>
-						);
-					})}
-				</div>
+				<AutoTabs className="mt-12" label="How we work" tabs={steps.map((s) => ({ id: `how-${s.n}`, title: s.keyword, text: s.open }))} stage={(i) => <HowScene key={i} i={i} />} />
 
 				<div className="mt-14 grid gap-4 md:grid-cols-2">
 					<div className="flex flex-col rounded-card border border-line bg-white p-7 sm:p-9">

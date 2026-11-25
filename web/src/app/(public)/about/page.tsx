@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Award, Compass, Headset, SlidersHorizontal } from 'lucide-react';
 import { AssessmentCta } from '@/components/home/AssessmentCta';
 import { Button } from '@/components/ui/Button';
+import { BrandFilm } from '@/components/ui/BrandFilm';
 import { Container } from '@/components/ui/Container';
 import { Icon3D } from '@/components/ui/Icon3D';
 import { PageHero } from '@/components/ui/PageHero';
@@ -38,7 +39,7 @@ export default function About() {
 				eyebrow="About"
 				lines={['Built for', 'African businesses.']}
 				lead="We give African businesses the quality of advisory support that was once available only to the largest corporations."
-				image={media.about}
+				art={<BrandFilm src={media.brandFilm.video} poster={media.brandFilm.poster} title="Florence Walters Consulting: Structure. Strategy. Excellence." />}
 				actions={
 					<>
 						<Button href="/business-assessment" size="lg">Take the free assessment</Button>

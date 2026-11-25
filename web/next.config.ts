@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return [{ source: '/services/consultation', destination: '/paid-consultation', permanent: true }];
   },
   // Only for `npm run snapshot` (static review copy): use the original image files, there is no image server there.
-  images: process.env.SNAPSHOT_BUILD === 'true' ? { unoptimized: true } : undefined,
+  images: process.env.SNAPSHOT_BUILD === 'true' ? { unoptimized: true } : { qualities: [70, 72, 75] },
   turbopack: {
     // The repo root also has a package-lock.json (legacy app); pin the root to this app.
     root: process.cwd(),
