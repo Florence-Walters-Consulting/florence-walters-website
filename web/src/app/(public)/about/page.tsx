@@ -51,7 +51,7 @@ export default function About() {
 				<Container className="grid items-center gap-12 lg:grid-cols-[5fr_6fr] lg:gap-20">
 					<Reveal className="relative mx-auto w-full max-w-md lg:max-w-none">
 						<div className="relative aspect-[4/5] overflow-hidden rounded-card bg-mist shadow-lift">
-							<Image src={media.aboutStory} alt="Two African business professionals celebrating success" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
+							<Image src={media.aboutStory} alt="Hands reviewing a contract" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
 						</div>
 					</Reveal>
 					<div>

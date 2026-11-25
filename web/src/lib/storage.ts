@@ -6,12 +6,8 @@ import { del, put } from '@vercel/blob';
 /** The only folders uploads may be written to (they match the legacy site_img layout). */
 export const UPLOAD_FOLDERS = [
 	'blog',
-	'services',
-	'team',
 	'testimonials',
 	'partners',
-	'home_background',
-	'general',
 	'summernote',
 	'work',
 ] as const;
