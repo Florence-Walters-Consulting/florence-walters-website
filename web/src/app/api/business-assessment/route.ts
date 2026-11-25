@@ -4,6 +4,8 @@ import { enforceRateLimit } from '@/lib/rate-limit';
 import { verifyRecaptcha } from '@/lib/recaptcha';
 import { escapeHtml as esc, nl2br, sendCompanyMail } from '@/lib/mailer';
 import { assessmentDetailLabels, assessmentSchema, branchLabels, firstMessage } from '@/lib/forms/assessment';
+import { insertLead } from '@/db/admin/leads';
+import { cleanDetails } from '@/lib/leads';
 
 // Port of api/business-assessment/index.php.
 export function POST(request: Request) {
@@ -33,6 +35,26 @@ export function POST(request: Request) {
 		const fullName = `${d.firstname} ${d.lastname}`;
 		const company = d.company || 'Not provided';
 
+		const saved = await insertLead({
+			type: 'assessment',
+			priority: priority ? 'urgent' : 'normal',
+			name: fullName,
+			email: d.email,
+			phone: d.phone,
+			company: d.company,
+			subject: d.branches.map((b) => branchLabels[b]).join(', '),
+			summary: d.mainProblem.replace(/\s+/g, ' ').slice(0, 400),
+			details: cleanDetails([
+				{ label: 'Business stage', value: d.stage },
+				{ label: 'Sector', value: d.sector },
+				{ label: 'Service areas', value: d.branches.map((b) => branchLabels[b]) },
+				...(Object.keys(assessmentDetailLabels) as (keyof typeof assessmentDetailLabels)[]).map((k) => ({ label: assessmentDetailLabels[k], value: d[k] })),
+				{ label: 'Contract, IP and governance concerns', value: d.contractsConcerns },
+				{ label: 'Budget', value: d.budget },
+				{ label: 'Timeline', value: d.timeline },
+				{ label: 'Main problem', value: d.mainProblem },
+			]),
+		});
 		try {
 			await sendCompanyMail({
 				subject: `${priority ? '[PRIORITY] ' : ''}New Free Business Assessment - ${fullName}`,
@@ -53,7 +75,7 @@ export function POST(request: Request) {
 			});
 		} catch (error) {
 			console.error('Business assessment mailer error:', error);
-			throw new HttpError('Your assessment could not be submitted. Please try again later.', 500);
+			if (saved === null) throw new HttpError('Your assessment could not be submitted. Please try again later.', 500);
 		}
 		return jsonSuccess({ priority }, 'Your assessment has been submitted.');
 	});

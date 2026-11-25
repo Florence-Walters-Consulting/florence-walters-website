@@ -9,5 +9,5 @@ export async function deleteSubscriberAction(id: number): Promise<ActionState> {
 		await deleteSubscriber(rowId.parse(id));
 		refresh('/admin/subscribers');
 		return 'Subscriber removed.';
-	});
+	}, ['admin']);
 }

@@ -25,8 +25,8 @@ export default function Toaster() {
 				<p
 					key={item.id}
 					role={item.kind === 'error' ? 'alert' : 'status'}
-					className={`pointer-events-auto rounded-md px-4 py-3 text-sm shadow-lg ${
-						item.kind === 'error' ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'
+					className={`pointer-events-auto rounded-xl px-4 py-3 text-sm shadow-lg ${
+						item.kind === 'error' ? 'bg-red-600 text-white' : 'bg-brand text-white'
 					}`}>
 					{item.message}
 				</p>

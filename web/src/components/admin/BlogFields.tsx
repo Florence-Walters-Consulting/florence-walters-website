@@ -3,7 +3,7 @@ import RichTextEditor from './RichTextEditor';
 import { SelectField, TextAreaField, TextField, YES_NO } from './fields';
 import { imageUrl } from '@/lib/images';
 
-type Post = { id: number; heading: string; categoryId: number; preamble: string; body: string; picture: string; featured: string; commentsAllowed: string; date: string };
+type Post = { id: number; heading: string; categoryId: number; preamble: string; body: string; picture: string; featured: string; status: string; date: string };
 
 export default function BlogFields({ post, categories }: { post?: Post; categories: { id: number; name: string }[] }) {
 	return (
@@ -22,7 +22,17 @@ export default function BlogFields({ post, categories }: { post?: Post; categori
 			<RichTextEditor name="body" label="Body" required defaultValue={post?.body} />
 			<div className="grid gap-4 sm:grid-cols-2">
 				<SelectField name="featured" label="Show on the home page?" required options={YES_NO} defaultValue={post?.featured ?? 'No'} hint="Featured posts appear in “Insights to Keep You Informed”." />
-				<SelectField name="comments_allowed" label="Comments allowed" required options={YES_NO} defaultValue={post?.commentsAllowed ?? 'No'} />
+				<SelectField
+					name="status"
+					label="Visibility"
+					required
+					defaultValue={post?.status ?? 'published'}
+					options={[
+						{ value: 'published', label: 'Published: shown on the website' },
+						{ value: 'draft', label: 'Draft: hidden, preview only' },
+					]}
+					hint="Save as a draft, then use Preview in the list to check it before publishing."
+				/>
 			</div>
 			<TextField name="date" label="Date" type="date" required defaultValue={post?.date.slice(0, 10) ?? new Date().toISOString().slice(0, 10)} />
 			<ImageField

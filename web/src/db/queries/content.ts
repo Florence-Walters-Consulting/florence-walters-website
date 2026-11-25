@@ -13,38 +13,6 @@ export async function getFaqs() {
 		.orderBy(asc(schema.faqs.id));
 }
 
-/** Port of api/slideshow. */
-export async function getSlides() {
-	'use cache';
-	cacheLife('hours');
-	cacheTag('slides');
-	return db
-		.select({
-			id: schema.pictureSlider.id,
-			heading: schema.pictureSlider.heading,
-			paragraph: schema.pictureSlider.paragraph,
-			picture: schema.pictureSlider.picture,
-		})
-		.from(schema.pictureSlider);
-}
-
-/** Port of api/team. */
-export async function getTeam() {
-	'use cache';
-	cacheLife('hours');
-	cacheTag('team');
-	return db
-		.select({
-			id: schema.team.id,
-			name: schema.team.name,
-			position: schema.team.position,
-			picture: schema.team.picture,
-			link: schema.team.link,
-		})
-		.from(schema.team)
-		.orderBy(asc(schema.team.id));
-}
-
 /**
  * Port of api/partners. The PHP used ORDER BY RAND() on every request; the order is now
  * shuffled in the browser (see Partners.tsx) because this result is cached.
@@ -53,7 +21,11 @@ export async function getPartners() {
 	'use cache';
 	cacheLife('hours');
 	cacheTag('partners');
-	return db.select({ id: schema.partners.id, picture: schema.partners.picture }).from(schema.partners);
+	return db
+		.select({ id: schema.partners.id, picture: schema.partners.picture, name: schema.partners.name })
+		.from(schema.partners)
+		.where(eq(schema.partners.display, 'Yes'))
+		.orderBy(asc(schema.partners.id));
 }
 
 /** Port of api/testimonials (visible rows only). Order is shuffled by the caller. */

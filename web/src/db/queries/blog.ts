@@ -5,6 +5,9 @@ import { db, schema } from '@/db';
 const { blog, blogCategories } = schema;
 export const BLOG_PAGE_SIZE = 6;
 
+/** Only published posts are ever visible on the website. Drafts are previewed through a signed link (see getBlogDraftById). */
+const published = eq(blog.status, 'published');
+
 /** Port of api/blogs-featured. */
 export async function getFeaturedBlogs() {
 	'use cache';
@@ -24,7 +27,7 @@ export async function getFeaturedBlogs() {
 		})
 		.from(blog)
 		.leftJoin(blogCategories, eq(blogCategories.id, blog.category))
-		.where(eq(blog.featured, 'Yes'))
+		.where(and(published, eq(blog.featured, 'Yes')))
 		.orderBy(desc(blog.id))
 		.limit(3);
 }
@@ -39,7 +42,7 @@ export async function getBlogList(page: number, search: string, category: number
 	category = Math.max(0, Math.trunc(category) || 0);
 	search = search.trim();
 
-	const conditions: SQL[] = [];
+	const conditions: SQL[] = [published];
 	if (search !== '') {
 		const term = `%${search}%`;
 		conditions.push(
@@ -95,7 +98,7 @@ export async function getBlogCategories() {
 			count: sql<number>`COUNT(${blog.id})`.mapWith(Number),
 		})
 		.from(blogCategories)
-		.leftJoin(blog, eq(blog.category, blogCategories.id))
+		.leftJoin(blog, and(eq(blog.category, blogCategories.id), published))
 		.groupBy(blogCategories.id, blogCategories.categoryName)
 		.orderBy(asc(blogCategories.categoryName));
 }
@@ -122,21 +125,21 @@ export async function getBlogBySlug(slug: string) {
 		})
 		.from(blog)
 		.leftJoin(blogCategories, eq(blogCategories.id, blog.category))
-		.where(eq(blog.slug, slug))
+		.where(and(eq(blog.slug, slug), published))
 		.limit(1);
 	if (!post) return null;
 
 	const [previous] = await db
-		.select({ id: blog.id, heading: blog.heading, slug: blog.slug })
+		.select({ id: blog.id, heading: blog.heading, slug: blog.slug, picture: blog.picture })
 		.from(blog)
-		.where(lt(blog.id, post.id))
+		.where(and(lt(blog.id, post.id), published))
 		.orderBy(desc(blog.id))
 		.limit(1);
 
 	const [next] = await db
-		.select({ id: blog.id, heading: blog.heading, slug: blog.slug })
+		.select({ id: blog.id, heading: blog.heading, slug: blog.slug, picture: blog.picture })
 		.from(blog)
-		.where(gt(blog.id, post.id))
+		.where(and(gt(blog.id, post.id), published))
 		.orderBy(asc(blog.id))
 		.limit(1);
 
@@ -150,7 +153,7 @@ export async function getBlogBySlug(slug: string) {
 			date: blog.date,
 		})
 		.from(blog)
-		.where(and(eq(blog.category, post.category), ne(blog.id, post.id)))
+		.where(and(eq(blog.category, post.category), ne(blog.id, post.id), published))
 		.orderBy(desc(blog.id))
 		.limit(3);
 
@@ -162,5 +165,29 @@ export async function getAllBlogSlugs() {
 	'use cache';
 	cacheLife('hours');
 	cacheTag('blog');
-	return db.select({ slug: blog.slug }).from(blog);
+	return db.select({ slug: blog.slug }).from(blog).where(published);
+}
+
+/** A post in any state, for the admin's private preview (never cached, never listed). */
+export async function getBlogDraftById(id: number) {
+	const [post] = await db
+		.select({
+			id: blog.id,
+			blog_id: blog.blogId,
+			heading: blog.heading,
+			slug: blog.slug,
+			category: blog.category,
+			category_name: blogCategories.categoryName,
+			preamble: blog.preamble,
+			body: blog.body,
+			picture: blog.picture,
+			date: blog.date,
+			comments_allowed: blog.commentsAllowed,
+			status: blog.status,
+		})
+		.from(blog)
+		.leftJoin(blogCategories, eq(blogCategories.id, blog.category))
+		.where(eq(blog.id, id))
+		.limit(1);
+	return post ? { blog: post, previous: null, next: null, related: [] as { id: number; heading: string; slug: string; preamble: string; picture: string; date: string }[] } : null;
 }

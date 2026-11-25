@@ -4,6 +4,8 @@ import { enforceRateLimit } from '@/lib/rate-limit';
 import { verifyRecaptcha } from '@/lib/recaptcha';
 import { escapeHtml as esc, nl2br, sendCompanyMail } from '@/lib/mailer';
 import { consultationQuestionLabels, consultationSchema, consultationTypeLabels, firstMessage } from '@/lib/forms/consultation';
+import { insertLead } from '@/db/admin/leads';
+import { cleanDetails } from '@/lib/leads';
 
 // Port of api/paid-consultation/index.php.
 export function POST(request: Request) {
@@ -34,6 +36,26 @@ export function POST(request: Request) {
 			(d.type === 'tax' && d.taxTimeline.startsWith('Immediate'));
 		const priorityLabel = priority ? 'Priority follow-up' : 'Standard follow-up';
 
+		const saved = await insertLead({
+			type: 'consultation',
+			priority: priority ? 'urgent' : 'normal',
+			name: d.firstname,
+			email: d.email,
+			phone: d.phone,
+			company: d.company,
+			subject: typeLabel,
+			summary: d.topics.join(', ').slice(0, 400),
+			details: cleanDetails([
+				{ label: 'Consultation', value: typeLabel },
+				{ label: 'Topics', value: d.topics },
+				{ label: 'Other topic', value: d.otherTopic },
+				...(Object.keys(consultationQuestionLabels) as (keyof typeof consultationQuestionLabels)[]).map((k) => ({ label: consultationQuestionLabels[k], value: d[k] })),
+				{ label: 'Deadline details', value: d.deadlineDetails },
+				{ label: 'Preferred contact', value: d.contactMethod },
+				{ label: 'Best time', value: d.contactTime },
+				{ label: 'Additional notes', value: d.additionalNotes },
+			]),
+		});
 		try {
 			await sendCompanyMail({
 				subject: `${priority ? '[PRIORITY] ' : ''}New Paid Consultation Request - ${typeLabel}`,
@@ -60,7 +82,7 @@ export function POST(request: Request) {
 			});
 		} catch (error) {
 			console.error('Paid consultation mailer error:', error);
-			throw new HttpError('Your request could not be sent. Please try again later.', 500);
+			if (saved === null) throw new HttpError('Your request could not be sent. Please try again later.', 500);
 		}
 		return jsonSuccess({ priority }, 'Your consultation request has been sent.');
 	});

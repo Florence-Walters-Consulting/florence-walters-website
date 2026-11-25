@@ -3,6 +3,9 @@ import { z } from 'zod';
 
 const schema = z.object({
 	DATABASE_URL: z.string().url(),
+	DATABASE_SSL: z.string().optional(),
+	DATABASE_SSL_CA: z.string().optional(),
+	DB_POOL_SIZE: z.string().optional(),
 	SESSION_SECRET: z.string().min(32).optional(),
 	RECAPTCHA_SECRET_KEY: z.string().optional(),
 	// Comma-separated hostnames Google must report in the siteverify result. Skipped when unset.

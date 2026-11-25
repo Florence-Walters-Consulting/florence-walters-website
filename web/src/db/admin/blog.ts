@@ -1,5 +1,5 @@
 import 'server-only';
-import { and, asc, count, desc, eq, ne, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, like, ne, or, sql, type SQL } from 'drizzle-orm';
 import { db, schema } from '@/db';
 
 const { blog, blogCategories } = schema;
@@ -16,25 +16,45 @@ export type BlogValues = {
 	date: string;
 	keywords: string;
 	commentsAllowed: string;
+	status: 'published' | 'draft';
 };
 
-export async function listPosts() {
-	return db
+export type PostFilters = { q?: string; status?: string; category?: number };
+
+/** One page of posts (any status), newest first, plus the total that matches the filters. */
+export async function listPosts(f: PostFilters, page: number, size: number) {
+	const conds: SQL[] = [];
+	if (f.q) {
+		const t = `%${f.q}%`;
+		conds.push(or(like(blog.heading, t), like(blog.preamble, t), like(blogCategories.categoryName, t))!);
+	}
+	if (f.status === 'published' || f.status === 'draft') conds.push(eq(blog.status, f.status));
+	if (f.category) conds.push(eq(blog.category, f.category));
+	const where = conds.length ? and(...conds) : undefined;
+
+	const [{ total }] = await db.select({ total: count() }).from(blog).leftJoin(blogCategories, eq(blogCategories.id, blog.category)).where(where);
+	const rows = await db
 		.select({
 			id: blog.id,
 			heading: blog.heading,
+			slug: blog.slug,
 			preamble: blog.preamble,
 			body: blog.body,
 			picture: blog.picture,
 			featured: blog.featured,
 			date: blog.date,
+			status: blog.status,
 			categoryId: blog.category,
 			categoryName: blogCategories.categoryName,
 			commentsAllowed: blog.commentsAllowed,
 		})
 		.from(blog)
 		.leftJoin(blogCategories, eq(blogCategories.id, blog.category))
-		.orderBy(desc(blog.id));
+		.where(where)
+		.orderBy(desc(blog.id))
+		.limit(size)
+		.offset((page - 1) * size);
+	return { rows, total };
 }
 
 export async function getPost(id: number) {

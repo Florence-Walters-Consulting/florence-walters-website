@@ -17,7 +17,7 @@ const schema = z.object({
 	preamble: text('Preamble', 2000),
 	body: z.string().max(500_000, 'The body is too long.'),
 	featured: yesNo,
-	comments_allowed: yesNo,
+	status: z.enum(['published', 'draft'], { message: 'Please choose published or draft.' }),
 	date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Please choose a valid date.'),
 });
 
@@ -45,27 +45,27 @@ export async function savePost(_prev: ActionState, formData: FormData): Promise<
 			date: input.date,
 			// Same value the legacy admin stored in `keywords`.
 			keywords: `${input.heading} ${input.preamble} ${body}`,
-			commentsAllowed: input.comments_allowed,
+			status: input.status,
 		};
 
 		if (input.id === undefined) {
 			if (!isUpload(file)) throw new UserError('Please choose an image.');
 			const picture = await saveImage(file, 'blog', { kind: 'exact', width: 800, height: 600 });
 			try {
-				await insertPost({ ...common, blogId: randomBytes(5).toString('hex'), picture });
+				await insertPost({ ...common, commentsAllowed: 'No', blogId: randomBytes(5).toString('hex'), picture });
 			} catch (error) {
 				await removeImage('blog', picture);
 				throw error;
 			}
 			done();
-			return 'Post added.';
+			return input.status === 'draft' ? 'Draft saved. It is not on the website yet.' : 'Post published.';
 		}
 
 		const existing = await getPost(input.id);
 		if (!existing) throw new UserError('That post no longer exists.');
 		const newPicture = isUpload(file) ? await saveImage(file, 'blog', { kind: 'exact', width: 800, height: 600 }) : undefined;
 		try {
-			await updatePost(input.id, { ...common, picture: newPicture ?? existing.picture });
+			await updatePost(input.id, { ...common, commentsAllowed: existing.commentsAllowed, picture: newPicture ?? existing.picture });
 		} catch (error) {
 			await removeImage('blog', newPicture);
 			throw error;
@@ -74,7 +74,7 @@ export async function savePost(_prev: ActionState, formData: FormData): Promise<
 		if (newPicture) await removeImage('blog', existing.picture);
 		await removeUnusedEmbedded(existing.body, body);
 		done();
-		return 'Post updated.';
+		return input.status === 'draft' ? 'Draft saved. It is hidden from the website.' : 'Post updated.';
 	});
 }
 

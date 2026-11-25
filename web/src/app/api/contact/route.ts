@@ -5,6 +5,8 @@ import { enforceRateLimit, rateLimit } from '@/lib/rate-limit';
 import { verifyRecaptcha } from '@/lib/recaptcha';
 import { escapeHtml as esc, nl2br, sendCompanyMail } from '@/lib/mailer';
 import { contactSchema, firstMessage } from '@/lib/forms/contact';
+import { insertLead } from '@/db/admin/leads';
+import { cleanDetails } from '@/lib/leads';
 
 const SUCCESS = 'Message sent successfully. We will get back to you soon.';
 const sha256 = (value: string) => createHash('sha256').update(value).digest('hex');
@@ -42,6 +44,18 @@ export function POST(request: Request) {
 		if (!isNewMessage) return jsonSuccess(null, SUCCESS);
 
 		const company = f.company || 'Not provided';
+		// Save to the admin inbox first, so the enquiry is never lost if e-mail delivery fails.
+		const saved = await insertLead({
+			type: 'contact',
+			priority: 'normal',
+			name: `${f.first_name} ${f.last_name}`.trim(),
+			email: f.email,
+			phone: f.phone,
+			company: f.company,
+			subject: f.subject,
+			summary: f.message.replace(/\s+/g, ' ').slice(0, 400),
+			details: cleanDetails([{ label: 'Service interest', value: f.subject }, { label: 'Message', value: f.message }]),
+		});
 		try {
 			await sendCompanyMail({
 				subject: `New Contact Form Submission: ${f.subject}`,
@@ -57,7 +71,8 @@ export function POST(request: Request) {
 			});
 		} catch (error) {
 			console.error('Contact form mail delivery failed:', error);
-			throw new HttpError('Message could not be sent. Please try again later.', 500);
+			// Saved in the inbox: the team will still see it, so the visitor is not told it failed.
+			if (saved === null) throw new HttpError('Message could not be sent. Please try again later.', 500);
 		}
 		return jsonSuccess(null, SUCCESS);
 	});

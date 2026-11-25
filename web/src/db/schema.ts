@@ -1,4 +1,4 @@
-import { mysqlTable, primaryKey, int, varchar, index, mediumtext, unique } from "drizzle-orm/mysql-core"
+import { mysqlTable, primaryKey, int, varchar, index, mediumtext, unique, timestamp, json, text } from "drizzle-orm/mysql-core"
 
 
 export const admin = mysqlTable("admin", {
@@ -26,6 +26,7 @@ export const blog = mysqlTable("blog", {
 	date: varchar({ length: 20 }).notNull(),
 	keywords: mediumtext().notNull(),
 	commentsAllowed: varchar("comments_allowed", { length: 10 }).notNull(),
+	status: varchar({ length: 10 }).default('published').notNull(),
 },
 (table) => [
 	index("idx_blog_slug").on(table.slug),
@@ -119,6 +120,8 @@ export const notifications = mysqlTable("notifications", {
 export const partners = mysqlTable("partners", {
 	id: int().autoincrement().notNull(),
 	picture: varchar({ length: 100 }).notNull(),
+	name: varchar({ length: 100 }).default('').notNull(),
+	display: varchar({ length: 10 }).default('Yes').notNull(),
 },
 (table) => [
 	primaryKey({ columns: [table.id], name: "partners_id"}),
@@ -185,4 +188,78 @@ export const testimonials = mysqlTable("testimonials", {
 },
 (table) => [
 	primaryKey({ columns: [table.id], name: "testimonials_id"}),
+]);
+
+/** Who changed what in the admin (see db/migrations/002_activity_log.sql). */
+export const adminActivity = mysqlTable("admin_activity", {
+	id: int().autoincrement().notNull(),
+	adminId: int("admin_id"),
+	adminName: varchar("admin_name", { length: 50 }).notNull(),
+	kind: varchar({ length: 20 }).default('other').notNull(),
+	message: varchar({ length: 255 }).notNull(),
+	createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+},
+(table) => [
+	index("idx_admin_activity_created").on(table.createdAt),
+	primaryKey({ columns: [table.id], name: "admin_activity_id"}),
+]);
+
+/** Inbox: enquiries, assessments and consultation requests (see db/migrations/003_inbox.sql). */
+export const leads = mysqlTable("leads", {
+	id: int().autoincrement().notNull(),
+	type: varchar({ length: 20 }).notNull(),
+	status: varchar({ length: 20 }).default('new').notNull(),
+	priority: varchar({ length: 10 }).default('normal').notNull(),
+	name: varchar({ length: 200 }).notNull(),
+	email: varchar({ length: 254 }).notNull(),
+	phone: varchar({ length: 50 }).default('').notNull(),
+	company: varchar({ length: 150 }).default('').notNull(),
+	subject: varchar({ length: 255 }).default('').notNull(),
+	summary: varchar({ length: 400 }).default('').notNull(),
+	details: json().$type<{ label: string; value: string | string[] }[]>().notNull(),
+	createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'date' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	index("idx_leads_status").on(table.status),
+	index("idx_leads_type").on(table.type),
+	index("idx_leads_created").on(table.createdAt),
+	primaryKey({ columns: [table.id], name: "leads_id"}),
+]);
+
+export const leadNotes = mysqlTable("lead_notes", {
+	id: int().autoincrement().notNull(),
+	leadId: int("lead_id").notNull(),
+	adminName: varchar("admin_name", { length: 50 }).notNull(),
+	note: text().notNull(),
+	createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+},
+(table) => [
+	index("idx_lead_notes_lead").on(table.leadId),
+	primaryKey({ columns: [table.id], name: "lead_notes_id"}),
+]);
+
+/** Work highlights shown on /work and the home page (see db/migrations/004_work_highlights.sql). */
+export const workHighlights = mysqlTable("work_highlights", {
+	id: int().autoincrement().notNull(),
+	slug: varchar({ length: 80 }).notNull(),
+	code: varchar({ length: 60 }).notNull(),
+	kind: varchar({ length: 60 }).notNull(),
+	body: varchar({ length: 150 }).notNull(),
+	title: varchar({ length: 255 }).notNull(),
+	logo: varchar({ length: 100 }).default('').notNull(),
+	category: varchar({ length: 40 }).notNull(),
+	summary: varchar({ length: 400 }).default('').notNull(),
+	scope: json().$type<{ t: string; d: string }[]>().notNull(),
+	receive: json().$type<string[]>().notNull(),
+	serviceSlug: varchar("service_slug", { length: 80 }).notNull(),
+	status: varchar({ length: 10 }).default('published').notNull(),
+	sortOrder: int("sort_order").default(0).notNull(),
+	createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'date' }).defaultNow().onUpdateNow().notNull(),
+},
+(table) => [
+	unique("uq_work_slug").on(table.slug),
+	index("idx_work_status_order").on(table.status, table.sortOrder),
+	primaryKey({ columns: [table.id], name: "work_highlights_id"}),
 ]);

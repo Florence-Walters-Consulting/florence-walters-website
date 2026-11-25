@@ -33,9 +33,9 @@ export default function DeleteButton({ action, confirmText, label = 'Delete' }: 
 				className={`${ui.btn} border border-red-200 bg-white text-red-700 hover:bg-red-50`}>
 				{label}
 			</button>
-			<dialog ref={dialog} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-lg p-0 shadow-xl backdrop:bg-slate-900/50">
+			<dialog ref={dialog} className="m-auto w-[calc(100%-2rem)] max-w-sm rounded-2xl p-0 shadow-2xl">
 				<div className="space-y-3 p-5">
-					<h2 className="text-lg font-semibold">Are you sure?</h2>
+					<h2 className="text-2xl text-brand">Are you sure?</h2>
 					<p className="text-sm text-slate-600">{confirmText}</p>
 					{error && (
 						<p role="alert" className={ui.error}>
@@ -43,7 +43,7 @@ export default function DeleteButton({ action, confirmText, label = 'Delete' }: 
 						</p>
 					)}
 				</div>
-				<div className="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 px-5 py-3">
+				<div className="flex justify-end gap-2 border-t border-line bg-canvas px-5 py-3">
 					<button type="button" onClick={() => dialog.current?.close()} className={`${ui.btn} ${ui.btnSecondary}`}>
 						Cancel
 					</button>

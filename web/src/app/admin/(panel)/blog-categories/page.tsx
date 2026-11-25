@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import type { Metadata } from 'next';
 import DeleteButton from '@/components/admin/DeleteButton';
 import PageTitle from '@/components/admin/PageTitle';
@@ -10,6 +11,8 @@ import { deleteCategoryAction, saveCategory } from './actions';
 export const metadata: Metadata = { title: 'Blog categories' };
 
 export default async function CategoriesPage() {
+	// The panel is per-visitor: never rendered at build time, so the queries below wait for the signed-in request.
+	await connection();
 	const categories = await listCategories();
 
 	return (

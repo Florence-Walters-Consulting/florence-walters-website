@@ -15,7 +15,7 @@ ssh() { command ssh "${SSH_OPTS[@]}" "$@"; }
 
 echo "==> Sending the files"
 ssh "$TARGET" 'rm -rf ~/fwc-load && mkdir -p ~/fwc-load'
-rsync -az -e "ssh ${SSH_OPTS[*]}" florencewalters.sql web/db/migrations/001_cleanup.sql "$TARGET":fwc-load/
+rsync -az -e "ssh ${SSH_OPTS[*]}" florencewalters.sql web/db/migrations/*.sql "$TARGET":fwc-load/
 rsync -az -e "ssh ${SSH_OPTS[*]}" site_img/ "$TARGET":fwc-load/site_img/
 
 echo "==> Importing on the server"
@@ -23,7 +23,8 @@ ssh "$TARGET" 'set -e
 TABLES=$(sudo mysql -N -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=\"florencewalters\"")
 if [ "$TABLES" != "0" ]; then echo "The database already has $TABLES tables. Stopping so nothing is overwritten."; exit 1; fi
 sudo mysql florencewalters < ~/fwc-load/florencewalters.sql
-sudo mysql florencewalters < ~/fwc-load/001_cleanup.sql
+# every migration, in order (001_cleanup first, then 002_..., each safe to re-run)
+for f in $(ls ~/fwc-load/[0-9][0-9][0-9]_*.sql | sort); do sudo mysql florencewalters < "$f"; done
 # The old dump stores the admin password in plain text. Disable it right away; you set a new one next.
 sudo mysql florencewalters -e "UPDATE admin SET password=\"!disabled\""
 sudo rsync -a ~/fwc-load/site_img/ /var/lib/fwc/site_img/

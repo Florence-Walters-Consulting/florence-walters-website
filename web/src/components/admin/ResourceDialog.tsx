@@ -49,7 +49,7 @@ export default function ResourceDialog({ title, triggerLabel, variant = 'seconda
 					// Click on the backdrop (the dialog element itself) closes it.
 					if (event.target === dialog.current) setOpen(false);
 				}}
-				className={`m-auto w-[calc(100%-2rem)] rounded-lg p-0 shadow-xl backdrop:bg-slate-900/50 ${wide ? 'max-w-3xl' : 'max-w-lg'}`}>
+				className={`m-auto w-[calc(100%-2rem)] rounded-2xl p-0 shadow-2xl ${wide ? 'max-w-3xl' : 'max-w-lg'}`}>
 				{open && (
 					<FormBody
 						key={openCount}
@@ -101,7 +101,7 @@ function FormBody({
 			}}
 			className="flex max-h-[90vh] flex-col">
 			<div className="border-b border-slate-200 px-5 py-4">
-				<h2 id={titleId} className="text-lg font-semibold">
+				<h2 id={titleId} className="text-2xl text-brand">
 					{title}
 				</h2>
 			</div>
@@ -113,7 +113,7 @@ function FormBody({
 				)}
 				{children}
 			</div>
-			<div className="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 px-5 py-3">
+			<div className="flex justify-end gap-2 border-t border-line bg-canvas px-5 py-3">
 				<button type="button" onClick={onDone} className={`${ui.btn} ${ui.btnSecondary}`}>
 					Cancel
 				</button>

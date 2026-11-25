@@ -3,6 +3,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { logActivity } from '@/db/admin/activity';
 import { findAdminByUsername } from '@/db/admin/admins';
 import { createSession } from '@/lib/auth/session';
 import { verifyPassword } from '@/lib/auth/password';
@@ -39,5 +40,6 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
 	}
 
 	await createSession({ id: found.id, username: found.username, name: found.name });
+	await logActivity(found, 'Signed in', 'auth');
 	redirect('/admin');
 }

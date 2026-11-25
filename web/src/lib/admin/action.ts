@@ -1,8 +1,9 @@
 import 'server-only';
 import { revalidatePath, updateTag } from 'next/cache';
 import type { z } from 'zod';
-import { requireAdminAction, UnauthorizedError } from '@/lib/auth/dal';
-import type { AdminSession } from '@/lib/auth/session';
+import { ForbiddenError, requireAdminAction, UnauthorizedError, type AdminUser } from '@/lib/auth/dal';
+import type { Role } from '@/lib/auth/roles';
+import { logActivity } from '@/db/admin/activity';
 import { UserError } from './errors';
 
 /** What every admin Server Action returns. `null` is the initial state before any submit. */
@@ -12,12 +13,14 @@ export type ActionState = { ok: true; message: string } | { ok: false; error: st
  * Wraps the body of an admin Server Action: checks the admin session first (server-side, on
  * every call), turns known errors into messages and hides unexpected ones.
  */
-export async function runAdminAction(fn: (admin: AdminSession) => Promise<string>): Promise<ActionState> {
+export async function runAdminAction(fn: (admin: AdminUser) => Promise<string>, roles?: Role[]): Promise<ActionState> {
 	try {
-		const admin = await requireAdminAction();
-		return { ok: true, message: await fn(admin) };
+		const admin = await requireAdminAction(roles);
+		const message = await fn(admin);
+		await logActivity(admin, message);
+		return { ok: true, message };
 	} catch (error) {
-		if (error instanceof UnauthorizedError || error instanceof UserError) return { ok: false, error: error.message };
+		if (error instanceof UnauthorizedError || error instanceof ForbiddenError || error instanceof UserError) return { ok: false, error: error.message };
 		console.error('Admin action failed:', error);
 		return { ok: false, error: 'Something went wrong. Please try again.' };
 	}

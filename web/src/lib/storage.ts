@@ -1,6 +1,7 @@
 import 'server-only';
 import { mkdir, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { del, put } from '@vercel/blob';
 
 /** The only folders uploads may be written to (they match the legacy site_img layout). */
 export const UPLOAD_FOLDERS = [
@@ -12,8 +13,12 @@ export const UPLOAD_FOLDERS = [
 	'home_background',
 	'general',
 	'summernote',
+	'work',
 ] as const;
 export type UploadFolder = (typeof UPLOAD_FOLDERS)[number];
+
+/** Where a file lives inside the Blob store (mirrors the /site_img/ layout). */
+const blobPath = (folder: string, name: string) => `site_img/${folder}/${name}`;
 
 const SAFE_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 
@@ -34,9 +39,14 @@ function localRoot() {
 
 export async function putFile(folder: UploadFolder, name: string, data: Buffer): Promise<void> {
 	assertSafe(folder, name);
-	if ((process.env.STORAGE_DRIVER ?? 'local') !== 'local') {
-		throw new Error(`Storage driver "${process.env.STORAGE_DRIVER}" is not implemented yet.`);
+	const driver = process.env.STORAGE_DRIVER ?? 'local';
+	if (driver === 'vercel-blob') {
+		// Hosting without a persistent disk (Vercel): files go to a public Blob store, under the same
+		// path the site already uses (site_img/<folder>/<name>), so imageUrl() needs no change.
+		await put(blobPath(folder, name), data, { access: 'public', addRandomSuffix: false, allowOverwrite: false });
+		return;
 	}
+	if (driver !== 'local') throw new Error(`Storage driver "${driver}" is not implemented.`);
 	const dir = path.join(/* turbopackIgnore: true */ localRoot(), folder);
 	await mkdir(/* turbopackIgnore: true */ dir, { recursive: true });
 	await writeFile(/* turbopackIgnore: true */ path.join(/* turbopackIgnore: true */ dir, name), data, { flag: 'wx' });
@@ -45,6 +55,11 @@ export async function putFile(folder: UploadFolder, name: string, data: Buffer):
 /** Deletes a file. Missing files are ignored (like the legacy @unlink). */
 export async function deleteFile(folder: UploadFolder, name: string): Promise<void> {
 	assertSafe(folder, name);
+	if ((process.env.STORAGE_DRIVER ?? 'local') === 'vercel-blob') {
+		const base = (process.env.NEXT_PUBLIC_IMAGE_BASE_URL ?? '').replace(/\/$/, '');
+		if (base) await del(`${base}/${blobPath(folder, name)}`);
+		return;
+	}
 	try {
 		await unlink(/* turbopackIgnore: true */ path.join(/* turbopackIgnore: true */ localRoot(), folder, name));
 	} catch (error) {

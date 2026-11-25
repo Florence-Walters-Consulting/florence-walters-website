@@ -30,7 +30,10 @@ rsync -az --delete -e "ssh ${SSH_OPTS[*]}" \
 echo "==> Installing and building on the server (takes a few minutes)"
 ssh "$TARGET" 'set -e
 sudo chown -R fwc:fwc /var/www/fwc
-sudo -u fwc -H bash -c "cd /var/www/fwc/web && set -a && . /etc/fwc/web.env && set +a && npm ci && npm run build"
+sudo -u fwc -H bash -c "cd /var/www/fwc/web && set -a && . /etc/fwc/web.env && set +a && npm ci && npm run build && npm run db:migrate"
+# Enquiries are deleted automatically 90 days after they arrive (every night at 03:30). Safe to re-install each deploy.
+echo "30 3 * * * fwc cd /var/www/fwc/web && set -a && . /etc/fwc/web.env && set +a && npm run --silent leads:purge >> /var/log/fwc-purge.log 2>&1" | sudo tee /etc/cron.d/fwc-purge >/dev/null
+sudo touch /var/log/fwc-purge.log && sudo chown fwc:fwc /var/log/fwc-purge.log
 sudo systemctl restart fwc
 sleep 4
 systemctl is-active fwc

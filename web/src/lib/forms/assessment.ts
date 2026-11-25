@@ -47,7 +47,7 @@ export const assessmentSchema = z
 		sector: field(100, { required: true }),
 		budget: field(100, { required: true }),
 		timeline: field(100, { required: true }),
-		mainProblem: field(3000, { required: true }),
+		mainProblem: field(3000),
 		captchaToken: field(4096, { required: true }),
 		branches: z.unknown(),
 		contractsConcerns: z.unknown().optional(),

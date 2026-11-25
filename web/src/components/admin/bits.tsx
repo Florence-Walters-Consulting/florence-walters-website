@@ -10,12 +10,12 @@ export function EmptyState({ title, children }: { title: string; children?: Reac
 }
 
 export function Badge({ tone = 'gray', children }: { tone?: 'gray' | 'green' | 'blue'; children: React.ReactNode }) {
-	const tones = { gray: 'bg-slate-100 text-slate-700', green: 'bg-emerald-100 text-emerald-800', blue: 'bg-brand-soft text-brand' };
+	const tones = { gray: 'bg-slate-100 text-slate-700', green: 'bg-emerald-100 text-emerald-800', blue: 'bg-brand-soft text-accent' };
 	return <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${tones[tone]}`}>{children}</span>;
 }
 
 export function Thumb({ src, alt, className = 'h-12 w-16' }: { src: string; alt: string; className?: string }) {
-	return <img src={src} alt={alt} loading="lazy" className={`${className} shrink-0 rounded-md border border-slate-200 bg-slate-100 object-cover`} />;
+	return <img src={src} alt={alt} loading="lazy" className={`${className} shrink-0 rounded-lg border border-line bg-slate-100 object-cover`} />;
 }
 
 /** Table shell that scrolls sideways on small screens instead of breaking the page. */
@@ -23,7 +23,7 @@ export function DataTable({ head, children }: { head: string[]; children: React.
 	return (
 		<div className={`${ui.card} overflow-x-auto`}>
 			<table className="w-full min-w-[36rem] text-left text-sm">
-				<thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+				<thead className="border-b border-line bg-canvas/60 text-xs uppercase tracking-wider text-slate-500">
 					<tr>
 						{head.map((h) => (
 							<th key={h} scope="col" className="px-4 py-3 font-medium">
@@ -32,7 +32,7 @@ export function DataTable({ head, children }: { head: string[]; children: React.
 						))}
 					</tr>
 				</thead>
-				<tbody className="divide-y divide-slate-100">{children}</tbody>
+				<tbody className="divide-y divide-line">{children}</tbody>
 			</table>
 		</div>
 	);

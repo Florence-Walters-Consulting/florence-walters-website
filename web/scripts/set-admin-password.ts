@@ -11,8 +11,9 @@
 import { config } from 'dotenv';
 import bcrypt from 'bcryptjs';
 import mysql from 'mysql2/promise';
+import { sslFromEnv } from '../src/lib/db-ssl';
 
-config({ path: '.env.local' });
+config({ path: process.env.ENV_FILE ?? '.env.local' });
 
 function readHidden(prompt: string): Promise<string> {
 	return new Promise((resolve) => {
@@ -62,7 +63,7 @@ async function main() {
 	if (password.length < 10) throw new Error('Password must be at least 10 characters.');
 
 	const hash = await bcrypt.hash(password, 12);
-	const db = await mysql.createConnection(process.env.DATABASE_URL);
+	const db = await mysql.createConnection({ uri: process.env.DATABASE_URL, ssl: sslFromEnv() });
 	try {
 		const [rows] = await db.execute('SELECT id FROM admin WHERE username = ? LIMIT 1', [username]);
 		if ((rows as unknown[]).length > 0) {

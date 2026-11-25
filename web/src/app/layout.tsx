@@ -1,23 +1,15 @@
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-	icons: { icon: '/img/favicon.png' },
-};
+// Favicons come from the file conventions in this folder (favicon.ico, icon.png, apple-icon.png),
+// generated from the company logo mark.
+// Set SITE_NOINDEX=true on a review/dev deployment so search engines never list it.
+export const metadata: Metadata = process.env.SITE_NOINDEX === 'true' ? { robots: { index: false, follow: false } } : {};
 
-// Minimal root layout shared by the public site and the admin. Each area adds its own
-// styles in its nested layout, so the admin never receives the public site's CSS.
+// Minimal root layout shared by the public site and the admin. Each area adds its own styles and
+// fonts in its nested layout, so neither receives the other's CSS.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<head>
-				<link rel="preconnect" href="https://api.fontshare.com" />
-				<link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
-				{/* Satoshi is distributed by Fontshare under the ITF Free Font License. */}
-				<link
-					rel="stylesheet"
-					href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap"
-				/>
-			</head>
 			<body>{children}</body>
 		</html>
 	);
