@@ -10,8 +10,8 @@ import { cn } from '@/lib/cn';
 import { steps } from '@/data/home';
 
 /**
- * Five steps in one horizontal row, each an icon and a few words. Tapping a step opens its sentence inside the card.
- * When the row first scrolls into view the steps light up in order. Under it, two ways to begin.
+ * Five steps in one horizontal row of equal-height cards: an icon, a few words and one sentence each. Tapping a card
+ * highlights it. When the row first scrolls into view the steps light up in order. Under it, two ways to begin.
  */
 export function HowWeWork() {
 	const [active, setActive] = useState(0);
@@ -41,7 +41,7 @@ export function HowWeWork() {
 			<Container>
 				<SectionHead label="How we work" title="From first click to signed agreement, in five steps." />
 
-				<div ref={root} role="tablist" aria-label="Steps" className="-mx-5 mt-12 flex snap-x items-start gap-3 overflow-x-auto px-5 pb-3 sm:mx-0 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0">
+				<div ref={root} role="tablist" aria-label="Steps" className="-mx-5 mt-12 flex snap-x items-stretch gap-3 overflow-x-auto px-5 pb-3 sm:mx-0 sm:grid sm:grid-cols-5 sm:items-stretch sm:overflow-visible sm:px-0">
 					{steps.map((s, i) => {
 						const open = i === active;
 						return (
@@ -50,13 +50,12 @@ export function HowWeWork() {
 								type="button"
 								role="tab"
 								aria-selected={open}
-								aria-expanded={open}
-								onClick={() => setActive(i)}
-								className={cn('float-on-hover group min-w-[10rem] shrink-0 snap-start rounded-card-sm border bg-white p-5 text-left transition-all duration-400 sm:min-w-0', open ? 'border-accent shadow-[var(--shadow-soft)]' : 'border-line hover:border-accent/40', i < lit ? 'opacity-100' : 'opacity-40 motion-reduce:opacity-100')}>
+																onClick={() => setActive(i)}
+								className={cn('float-on-hover group flex min-w-[15rem] shrink-0 snap-start flex-col rounded-card-sm border bg-white p-5 text-left transition-all duration-400 sm:min-w-0', open ? 'border-accent shadow-[var(--shadow-soft)]' : 'border-line hover:border-accent/40', i < lit ? 'opacity-100' : 'opacity-40 motion-reduce:opacity-100')}>
 								<span className="text-xs font-bold tracking-[0.16em] text-accent-deep">{s.n}</span>
 								<span className="mt-3 block"><Icon3D icon={s.icon} size={52} tone={open ? 'blue' : 'white'} /></span>
 								<span className="mt-5 block text-[1.0625rem] leading-snug font-bold">{s.keyword}</span>
-								{open && <span className="hero-in mt-3 block text-[0.9375rem] leading-relaxed font-normal text-ink-soft">{s.open}</span>}
+								<span className={cn('mt-3 block text-[0.9375rem] leading-relaxed font-normal transition-colors', open ? 'text-ink' : 'text-ink-soft')}>{s.open}</span>
 							</button>
 						);
 					})}
