@@ -35,10 +35,10 @@
     "lucide-react": "^1.66.0",
     "motion": "^14.9.0",
     "mysql2": "^3.24.5",
-    "next": "^16.4.3",
+    "next": "16.4.6",
     "nodemailer": "^10.0.16",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.91.0",
     "recharts": "^3.10.1",
@@ -53,16 +53,20 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/nodemailer": "^8.0.2",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "19.3.1",
+    "@types/react-dom": "19.3.0",
     "@types/react-google-recaptcha": "^2.1.9",
     "@types/sanitize-html": "^2.16.2",
     "dotenv": "^18.0.6",
     "drizzle-kit": "^0.31.11",
-    "eslint": "^9",
-    "eslint-config-next": "^16.4.3",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.6",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "19.3.1",
+    "@types/react-dom": "19.3.0"
   }
 }
