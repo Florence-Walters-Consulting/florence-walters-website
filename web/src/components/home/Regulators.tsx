@@ -19,12 +19,23 @@ export async function Regulators() {
 			</Container>
 			{row.length > 0 && (
 				<Marquee className="mt-9" duration={Math.max(60, row.length * 6)} yieldTo={['#hero']}>
-					{row.map((r, i) => (
-						<div key={`${r.id}-${i}`} className="flex h-20 w-56 shrink-0 items-center gap-3 rounded-card-sm border border-line bg-white px-4 shadow-[0_1px_0_rgb(31_42_68/0.04)]">
-							<img src={imageUrl('partners', r.picture)} alt="" loading="lazy" decoding="async" className="h-11 w-14 shrink-0 object-contain" />
-							<span className="text-sm leading-tight font-semibold text-ink">{r.name}</span>
-						</div>
-					))}
+					{row.map((r, i) => {
+						// "National Pension Commission (PenCom)" shows PenCom large with the full name under it; a name with no brackets is shown whole.
+						const m = /^(.*?)\s*\(([^)]+)\)\s*$/.exec(r.name);
+						const short = m ? m[2] : r.name;
+						const full = m ? m[1] : '';
+						return (
+							<div key={`${r.id}-${i}`} title={r.name} className="flex h-24 w-72 shrink-0 items-center gap-3.5 overflow-hidden rounded-card-sm border border-line bg-white px-4 shadow-[0_1px_0_rgb(31_42_68/0.04)] sm:w-80">
+								<span className="grid size-14 shrink-0 place-items-center rounded-lg bg-mist p-1.5">
+									<img src={imageUrl('partners', r.picture)} alt="" loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+								</span>
+								<span className="min-w-0 flex-1">
+									<span className="block truncate text-base leading-tight font-bold text-ink">{short}</span>
+									{full && <span className="mt-0.5 line-clamp-2 block text-xs leading-snug text-ink-soft [overflow-wrap:anywhere]">{full}</span>}
+								</span>
+							</div>
+						);
+					})}
 				</Marquee>
 			)}
 			<Container className="mt-8">
