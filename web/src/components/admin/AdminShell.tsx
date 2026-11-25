@@ -37,7 +37,7 @@ export default function AdminShell({ name, role, badges, children }: { name: str
 			<Toaster />
 			<aside className="hidden w-72 shrink-0 lg:block">
 				<div className="sticky top-0 flex h-screen flex-col overflow-y-auto bg-brand-deep px-5 py-4">
-					<Link href="/admin" className="block px-3 py-1"><img src="/media/logo-white.webp" alt="Florence Walters Consulting" className="h-11 w-auto" /></Link>
+					<Link href="/admin" className="block px-3 py-1"><img src="/brand/logo-white.svg" alt="Florence Walters Consulting" className="h-11 w-auto" /></Link>
 					<div className="mt-4 flex-1">
 						<NavLinks groups={groups} badges={badges} />
 					</div>

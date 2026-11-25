@@ -29,7 +29,7 @@ export default function LoginPage() {
 				<div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-brand-deep to-transparent" />
 				<span aria-hidden className="pointer-events-none absolute -right-6 -bottom-16 -z-10 hidden font-display text-[22rem] leading-none text-transparent select-none [-webkit-text-stroke:1px_rgb(255_255_255/0.1)] lg:block">FWC</span>
 
-				<img src="/media/logo-white.webp" alt="Florence Walters Consulting" className="rise h-14 w-auto self-start sm:h-16" />
+				<img src="/brand/logo-white.svg" alt="Florence Walters Consulting" className="rise h-14 w-auto self-start sm:h-16" />
 
 				<div className="my-12 lg:my-0">
 					<p className="rise text-xs font-medium tracking-[0.28em] text-accent-soft uppercase" style={{ animationDelay: '150ms' }}>

@@ -85,7 +85,7 @@ export function Header() {
 			<div className={cn('relative border-b bg-white/95 text-ink backdrop-blur-xl transition-shadow duration-300', scrolled || menu ? 'border-line shadow-[0_8px_24px_-18px_rgb(31_42_68/0.35)]' : 'border-line/70')}>
 				<nav aria-label="Main" className="page-container flex h-[4.5rem] items-center justify-between gap-4">
 					<SiteLink href="/" aria-label="Florence Walters Consulting, home" className="block shrink-0">
-						<img src="/media/logo-dark.webp" alt="Florence Walters Consulting" className="h-14 w-auto" />
+						<img src="/brand/logo.svg" alt="Florence Walters Consulting" className="h-14 w-auto" />
 					</SiteLink>
 
 					<ul className="hidden items-center gap-0.5 lg:flex">

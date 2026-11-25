@@ -49,7 +49,7 @@ export async function Footer() {
 		<footer className="bg-ink-deep text-white">
 			<div className="page-container grid gap-12 py-14 lg:grid-cols-[1fr_1.1fr] lg:py-16">
 				<div>
-					<img src="/media/logo-white.webp" alt={company.name} className="h-16 w-auto" />
+					<img src="/brand/logo-white.svg" alt={company.name} className="h-16 w-auto" />
 					<p className="mt-6 max-w-sm text-white/70">Practical business solutions for organisations ready to start, comply and grow in Nigeria.</p>
 					<address className="mt-6 grid gap-1.5 text-sm leading-relaxed text-white/65 not-italic">
 						<span>{company.address}</span>
