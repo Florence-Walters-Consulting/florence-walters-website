@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* Admin area only. Not loaded on the public site. Same brand as the website: ink navy, one indigo accent. */
+@theme inline {
+	--font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+}
+@theme {
+	--color-brand: #1f2a44;
+	--color-brand-deep: #161e33;
+	--color-brand-soft: #f1f0fb;
+	--color-accent: #4b48d6;
+	--color-accent-soft: #b9b8fc;
+	--color-canvas: #f6f6fb;
+	--color-line: #e6e5f0;
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { color-scheme: light; }
+body { -webkit-font-smoothing: antialiased; }
+@layer base {
+	h1, h2 { font-family: var(--font-cormorant), Georgia, serif; font-weight: 500; }
+}
+dialog::backdrop { background: rgb(22 30 51 / 0.6); backdrop-filter: blur(4px); }
+:focus-visible { outline: 2px solid #6b68f7; outline-offset: 2px; }
+
+@keyframes drift { from { transform: scale(1.02) translate3d(0, 0, 0); } to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); } }
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.drift { animation: drift 32s ease-in-out infinite alternate; }
+.rise { animation: rise 1100ms var(--ease-out-expo) both; }
+.grow { transform-origin: left; animation: grow 1400ms var(--ease-out-expo) 500ms both; }
+@media (prefers-reduced-motion: reduce) { .drift, .rise, .grow { animation: none; } }

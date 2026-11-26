@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FWC service page hero sections</title>
+<style>
+  /* ---- FWC service hero (copy this block into the site stylesheet) ---- */
+  .fwc-hero{position:relative;overflow:hidden;background:radial-gradient(1200px 700px at 78% 40%,#DCDBFF 0%,rgba(220,219,255,0) 60%),linear-gradient(180deg,#F7F7FF 0%,#F1F1FE 100%);font-family:Satoshi,'Inter',system-ui,sans-serif;color:#1F2A44}
+  .fwc-hero__inner{max-width:1280px;margin:0 auto;padding:96px 32px;display:flex;flex-wrap:wrap;align-items:center;gap:32px}
+  .fwc-hero__copy{flex:1 1 480px;min-width:0}
+  .fwc-hero__label{display:flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:4px;color:#4F4CE0;text-transform:uppercase}
+  .fwc-hero__label:before{content:"";width:12px;height:12px;background:#6B68F7;border-radius:2px}
+  .fwc-hero h1{margin:22px 0 0;font-weight:800;font-size:clamp(40px,5.2vw,72px);line-height:1.02;letter-spacing:-.03em;color:#1F2A44}
+  .fwc-hero p{margin:24px 0 0;font-size:clamp(17px,1.4vw,21px);line-height:1.55;color:#4A5168;max-width:560px}
+  .fwc-hero__ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+  .fwc-btn{display:inline-flex;align-items:center;gap:14px;padding:16px 16px 16px 28px;border-radius:999px;font-weight:600;font-size:17px;text-decoration:none}
+  .fwc-btn--primary{background:#5B57EA;color:#fff}
+  .fwc-btn--primary span{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);display:inline-flex;align-items:center;justify-content:center}
+  .fwc-btn--ghost{padding:16px 28px;border:1.5px solid #CFCFE6;color:#1F2A44}
+  .fwc-hero__media{flex:1 1 520px;min-width:0;display:flex;justify-content:center}
+  .fwc-hero__media video{width:100%;max-width:680px;height:auto;display:block}
+  @media (prefers-reduced-motion: reduce){.fwc-hero__media video{display:none}.fwc-hero__media img{display:block}}
+  .fwc-hero__media img{display:none;width:100%;max-width:680px}
+</style>
+</head>
+<body style="margin:0">
+
+<!-- ===== 1. Business Setup & Corporate Services ===== -->
+<section class="fwc-hero" id="hero-setup">
+  <div class="fwc-hero__inner">
+    <div class="fwc-hero__copy">
+      <div class="fwc-hero__label">Business Setup &amp; Corporate Services</div>
+      <h1>The right structure, registered properly, ready for the bank.</h1>
+      <p>We help you choose your structure, register it with the CAC and hand you a complete, bank-ready document pack.</p>
+      <div class="fwc-hero__ctas">
+        <a class="fwc-btn fwc-btn--primary" href="#register">Start your registration <span>→</span></a>
+        <a class="fwc-btn fwc-btn--ghost" href="#assessment">Take the free assessment</a>
+      </div>
+    </div>
+    <div class="fwc-hero__media">
+      <video autoplay muted loop playsinline preload="auto" aria-hidden="true">
+        <source src="FWC_hero_setup.webm" type="video/webm"><source src="FWC_hero_setup.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. Regulatory Licences & Compliance ===== -->
+<section class="fwc-hero" id="hero-compliance">
+  <div class="fwc-hero__inner">
+    <div class="fwc-hero__copy">
+      <div class="fwc-hero__label">Regulatory Licences &amp; Compliance</div>
+      <h1>Stay licensed. Stay compliant. Keep growing.</h1>
+      <p>We work out which licences and filings your business needs, file them, deal with the regulator and track every renewal.</p>
+      <div class="fwc-hero__ctas">
+        <a class="fwc-btn fwc-btn--primary" href="#licence-check">Check which licences you need <span>→</span></a>
+        <a class="fwc-btn fwc-btn--ghost" href="#assessment">Take the free assessment</a>
+      </div>
+    </div>
+    <div class="fwc-hero__media">
+      <video autoplay muted loop playsinline preload="auto" aria-hidden="true">
+        <source src="FWC_hero_compliance.webm" type="video/webm"><source src="FWC_hero_compliance.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. Contracts, IP & Governance ===== -->
+<section class="fwc-hero" id="hero-contracts">
+  <div class="fwc-hero__inner">
+    <div class="fwc-hero__copy">
+      <div class="fwc-hero__label">Contracts, IP &amp; Governance</div>
+      <h1>Protect what you've built, in writing.</h1>
+      <p>Contracts that hold up, a brand that's legally yours, and the policies investors and regulators expect.</p>
+      <div class="fwc-hero__ctas">
+        <a class="fwc-btn fwc-btn--primary" href="#health-check">Run the 30-second health-check <span>→</span></a>
+        <a class="fwc-btn fwc-btn--ghost" href="#assessment">Take the free assessment</a>
+      </div>
+    </div>
+    <div class="fwc-hero__media">
+      <video autoplay muted loop playsinline preload="auto" aria-hidden="true">
+        <source src="FWC_hero_contracts.webm" type="video/webm"><source src="FWC_hero_contracts.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. Business Advisory & Growth ===== -->
+<section class="fwc-hero" id="hero-growth">
+  <div class="fwc-hero__inner">
+    <div class="fwc-hero__copy">
+      <div class="fwc-hero__label">Business Advisory &amp; Growth</div>
+      <h1>Plans investors read. Growth you can defend.</h1>
+      <p>We do the research, build the numbers and write the documents, so you walk into the meeting ready.</p>
+      <div class="fwc-hero__ctas">
+        <a class="fwc-btn fwc-btn--primary" href="#goals">Pick your goal <span>→</span></a>
+        <a class="fwc-btn fwc-btn--ghost" href="#assessment">Take the free assessment</a>
+      </div>
+    </div>
+    <div class="fwc-hero__media">
+      <video autoplay muted loop playsinline preload="auto" aria-hidden="true">
+        <source src="FWC_hero_growth.webm" type="video/webm"><source src="FWC_hero_growth.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. Marketing & Brand ===== -->
+<section class="fwc-hero" id="hero-marketing">
+  <div class="fwc-hero__inner">
+    <div class="fwc-hero__copy">
+      <div class="fwc-hero__label">Marketing &amp; Brand</div>
+      <h1>Look as good as your work really is.</h1>
+      <p>We build your brand and run your social media, from the first logo to the monthly report.</p>
+      <div class="fwc-hero__ctas">
+        <a class="fwc-btn fwc-btn--primary" href="#brand-check">Get a brand check <span>→</span></a>
+        <a class="fwc-btn fwc-btn--ghost" href="#assessment">Take the free assessment</a>
+      </div>
+    </div>
+    <div class="fwc-hero__media">
+      <video autoplay muted loop playsinline preload="auto" aria-hidden="true">
+        <source src="FWC_hero_marketing.webm" type="video/webm"><source src="FWC_hero_marketing.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

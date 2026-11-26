@@ -1,0 +1,26 @@
+[Unit]
+Description=Florence Walters Consulting website (Next.js)
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=fwc
+Group=fwc
+WorkingDirectory=/var/www/fwc/web
+# Secrets and settings live outside the code, readable only by root and the fwc group.
+EnvironmentFile=/etc/fwc/web.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3000
+Restart=always
+RestartSec=3
+
+# Hardening: the site cannot write anywhere except its build cache and the uploads folder.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=-/var/www/fwc/web/.next /var/lib/fwc
+
+[Install]
+WantedBy=multi-user.target

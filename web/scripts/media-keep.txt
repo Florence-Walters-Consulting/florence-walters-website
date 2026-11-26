@@ -1,0 +1,3 @@
+# Source files (by output name, no extension) that the site uses. optimize-media.sh converts only these.
+# Add a name here when a new image or video is used on the site.
+# Nothing is listed yet: the current files in public/media are interim placeholders (see src/data/media.ts).

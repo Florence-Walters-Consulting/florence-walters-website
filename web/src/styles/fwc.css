@@ -1,0 +1,272 @@
+/*
+ * Florence Walters Consulting: design system.
+ *
+ * Loaded only by the (public) route group. It uses full Tailwind (with Preflight), so it must
+ * never be imported next to the legacy Bootstrap stylesheets used by the (site) group.
+ *
+ * Direction (see docs/design-system.md): a modern consultancy, not a law firm. About 70% white or
+ * lilac, 20% Electric Blue, 10% navy (footer, hero and one feature band). Satoshi headings,
+ * soft 3D visuals, and motion that is short (0.4 s), calm and never more than one thing at a time.
+ */
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/* Font families come from next/font CSS variables set on the layout wrapper, so `inline` is required. */
+@theme inline {
+	--font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+	--font-display: var(--font-satoshi), var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+	/* Brand colour. White and lilac carry the page, Electric Blue is the accent, navy is for accents only. */
+	--color-ink: #1f2a44;
+	--color-ink-deep: #161e33;
+	--color-ink-soft: #4a5266;
+	--color-ink-mute: #6b7285;
+	/* Electric Blue #6B68F7 is the brand colour. Small text on white uses accent-deep and filled buttons use
+	   accent-btn, because white on the pure brand blue is under the 4.5:1 contrast needed for small text. */
+	--color-accent: #6b68f7;
+	--color-accent-btn: #5b57ee;
+	--color-accent-hover: #4a46d6;
+	--color-accent-deep: #4a47c9;
+	--color-accent-bright: #6b68f7;
+	--color-accent-soft: #c4c3fd;
+	--color-mist: #f4f4ff;
+	--color-mist-deep: #e9e9ff;
+	--color-canvas: #ffffff;
+	--color-line: #e4e4f3;
+	--color-line-dark: rgb(255 255 255 / 0.14);
+	--color-gold: #f2b84b;
+
+	/* Type scale. Display and title are fluid; the rest are fixed. */
+	--text-display: clamp(2.5rem, 5.2vw, 4.75rem);
+	--text-display--line-height: 1.02;
+	--text-display--letter-spacing: -0.03em;
+	--text-title: clamp(2rem, 3.6vw, 3.25rem);
+	--text-title--line-height: 1.06;
+	--text-title--letter-spacing: -0.025em;
+	--text-heading: clamp(1.5rem, 2.2vw, 2rem);
+	--text-heading--line-height: 1.15;
+	--text-statement: clamp(1.75rem, 3vw, 2.75rem);
+	--text-statement--line-height: 1.22;
+	--text-lead: clamp(1.125rem, 1.5vw, 1.375rem);
+	--text-lead--line-height: 1.55;
+
+	/* Shape */
+	--radius-card: 1.75rem;
+	--radius-card-sm: 1.125rem;
+
+	/* Layout */
+	--container-page: 82.5rem;
+
+	/* Motion: out-expo for entrances, a gentler curve for hovers. */
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+	--shadow-lift: 0 24px 48px -24px rgb(31 42 68 / 0.28);
+	--shadow-soft: 0 18px 40px -22px rgb(107 104 247 / 0.45);
+}
+
+@layer base {
+	html {
+		background: var(--color-canvas);
+		color: var(--color-ink);
+		-webkit-text-size-adjust: 100%;
+		scroll-padding-top: 6rem;
+	}
+	body {
+		overflow-x: clip;
+		font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+		font-size: 1rem;
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+	h1, h2, h3, h4 {
+		font-family: var(--font-satoshi), var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+	}
+	p { text-wrap: pretty; }
+	::selection { background: var(--color-accent); color: #fff; }
+	:focus-visible {
+		outline: 2px solid var(--color-accent-bright);
+		outline-offset: 3px;
+		border-radius: 4px;
+	}
+	/* Keeps anchors to in-page sections from sliding under the sticky header. */
+	[id] { scroll-margin-top: 6rem; }
+}
+
+@layer components {
+	/* Page width with fluid side gutters. */
+	.page-container {
+		width: 100%;
+		max-width: var(--container-page);
+		margin-inline: auto;
+		padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+	}
+
+	/* Vertical rhythm between sections. */
+	.section-space { padding-block: clamp(4.5rem, 9vw, 8.5rem); }
+
+	/* Numerals and card titles set in the display face carry the headline weight. */
+	.font-display { font-weight: 800; letter-spacing: -0.02em; }
+
+	/* Small square bullet used before every section label. */
+	.label-dot::before {
+		content: "";
+		display: inline-block;
+		width: 0.5rem;
+		height: 0.5rem;
+		margin-right: 0.625rem;
+		background: var(--color-accent-bright);
+		vertical-align: 0.05em;
+	}
+
+	/* Accent full stop at the end of a title: <h2>Our services<span class="stop">.</span></h2> */
+	.stop { color: var(--color-accent-bright); }
+
+	/* Links in running text */
+	.prose-link {
+		text-decoration: underline;
+		text-decoration-color: var(--color-accent-soft);
+		text-underline-offset: 0.25em;
+		transition: text-decoration-color 200ms var(--ease-soft);
+	}
+	.prose-link:hover { text-decoration-color: var(--color-accent); }
+}
+
+@layer components {
+	/* Typography for admin-authored article HTML (rich-text editor output). */
+	.article-body { font-size: 1.1875rem; line-height: 1.85; color: var(--color-ink); }
+	.article-body > * + * { margin-top: 1.5rem; }
+	.article-body p { color: color-mix(in srgb, var(--color-ink) 86%, white); }
+	.article-body > p:first-of-type { font-size: 1.375rem; line-height: 1.65; color: var(--color-ink); }
+	.article-body > p:first-of-type::first-letter {
+		float: left; margin: 0.35rem 0.75rem 0 0; font-family: var(--font-satoshi), var(--font-dm-sans), sans-serif;
+		font-size: 4.5rem; line-height: 0.76; font-weight: 900; color: var(--color-accent);
+	}
+	.article-body h2, .article-body h3 {
+		font-family: var(--font-satoshi), var(--font-dm-sans), sans-serif; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+		margin-top: 3.5rem; scroll-margin-top: 7rem;
+	}
+	.article-body h2 { font-size: clamp(2.125rem, 3.4vw, 2.75rem); }
+	.article-body h3 { font-size: clamp(1.75rem, 2.8vw, 2.25rem); }
+	.article-body h2 + *, .article-body h3 + * { margin-top: 1rem; }
+	.article-body a { text-decoration: underline; text-decoration-color: var(--color-accent-soft); text-underline-offset: 0.25em; transition: text-decoration-color 200ms; }
+	.article-body a:hover { text-decoration-color: var(--color-accent); color: var(--color-accent-deep); }
+	.article-body ul, .article-body ol { padding-left: 0; list-style: none; counter-reset: li; }
+	.article-body li { position: relative; padding-left: 2rem; margin-top: 0.75rem; }
+	.article-body li p { margin: 0; }
+	.article-body ul > li::before { content: ""; position: absolute; left: 0.2rem; top: 0.8em; width: 0.5rem; height: 0.5rem; background: var(--color-accent-bright); }
+	.article-body ol > li { counter-increment: li; }
+	.article-body ol > li::before { content: counter(li) "."; position: absolute; left: 0; font-family: var(--font-satoshi), var(--font-dm-sans), sans-serif; font-size: 1.5rem; line-height: 1.5; color: var(--color-accent-deep); }
+	.article-body blockquote {
+		margin-block: 2.5rem; padding-left: 1.75rem; border-left: 2px solid var(--color-accent-bright);
+		font-family: var(--font-satoshi), var(--font-dm-sans), sans-serif; font-size: 1.75rem; line-height: 1.3; font-weight: 700;
+	}
+	.article-body blockquote p { font-size: inherit; line-height: inherit; color: var(--color-ink); }
+	.article-body img { width: 100%; height: auto; border-radius: var(--radius-card); margin-block: 2.5rem; }
+	.article-body address { font-style: normal; border-left: 2px solid var(--color-accent-bright); padding: 0.25rem 0 0.25rem 1.5rem; line-height: 1.7; }
+	/* Legal pages: same typography, without the drop cap and enlarged first paragraph. */
+	.article-body.legal { font-size: 1.0625rem; line-height: 1.8; }
+	.article-body.legal > p:first-of-type { font-size: inherit; line-height: inherit; color: color-mix(in srgb, var(--color-ink) 86%, white); }
+	.article-body.legal > p:first-of-type::first-letter { all: unset; }
+	.article-body.legal h2 { font-size: clamp(1.75rem, 2.6vw, 2.25rem); margin-top: 3rem; }
+	.article-body.legal h3 { font-size: 1.5rem; margin-top: 2rem; }
+	.article-body hr { margin-block: 3rem; border: 0; border-top: 1px solid var(--color-line); }
+	.article-body strong { font-weight: 600; color: var(--color-ink); }
+	.article-body table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+	.article-body th, .article-body td { border-bottom: 1px solid var(--color-line); padding: 0.75rem 0.5rem; text-align: left; }
+}
+
+@layer utilities {
+	/* Marquee: duplicate the children once and the loop is seamless. Pauses on hover. */
+	@keyframes fwc-marquee {
+		from { transform: translateX(0); }
+		to { transform: translateX(-50%); }
+	}
+	.marquee-track {
+		display: flex;
+		width: max-content;
+		animation: fwc-marquee var(--marquee-duration, 45s) linear infinite;
+	}
+	@keyframes acc-down { from { height: 0; } to { height: var(--radix-accordion-content-height); } }
+	@keyframes acc-up { from { height: var(--radix-accordion-content-height); } to { height: 0; } }
+	@keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+	@keyframes menu-out { from { opacity: 1; } to { opacity: 0; } }
+	@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+	@keyframes sheet-in { from { transform: translateX(100%); } to { transform: none; } }
+	@keyframes hero-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+	@keyframes hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+	.hero-in { animation: hero-in 600ms var(--ease-out-expo) both; }
+	.hero-progress { transform-origin: left; animation: hero-progress var(--hero-duration, 9s) linear forwards; }
+	.hero-root:hover .hero-progress { animation-play-state: paused; }
+	.marquee:hover .marquee-track, .marquee[data-paused="true"] .marquee-track { animation-play-state: paused; }
+}
+
+@layer utilities {
+	/* Soft float used by the 3D icons on hover (and once, very slowly, on the hero art). */
+	@keyframes fwc-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+	.float-on-hover:hover .float-target, .float-always .float-target { animation: fwc-float 4.5s ease-in-out infinite; }
+	.preserve-3d { transform-style: preserve-3d; }
+	.perspective-1000 { perspective: 1000px; }
+}
+
+@layer utilities {
+	/* Floating shapes behind a band (FloatingShapes). Slow, and paused by the parent when something else owns the screen. */
+	@keyframes fwc-spin3d { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
+	@keyframes fwc-drift { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -18px, 0); } }
+	.shape-spin { animation: fwc-spin3d var(--dur, 22s) linear infinite; transform-style: preserve-3d; }
+	.shape-drift { animation: fwc-drift var(--dur, 7s) ease-in-out infinite; }
+	[data-paused="true"] .shape-spin, [data-paused="true"] .shape-drift { animation-play-state: paused; }
+
+	/* Auto-advancing tabs: the bar under the active tab fills over the interval, then the next tab opens. */
+	@keyframes fwc-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+	.tab-fill { transform-origin: left center; animation: fwc-fill var(--tab-duration, 6s) linear both; }
+	.tabs-paused .tab-fill { animation-play-state: paused; }
+
+	/* Stage scenes (How we work, What's included): small entrance animations. */
+	@keyframes fwc-pop { from { opacity: 0; transform: translateY(18px) scale(0.97); } to { opacity: 1; transform: none; } }
+	@keyframes fwc-stamp { 0% { opacity: 0; transform: scale(1.8) rotate(-14deg); } 60% { opacity: 1; transform: scale(0.92) rotate(-14deg); } 100% { opacity: 1; transform: scale(1) rotate(-14deg); } }
+	@keyframes fwc-sign { from { stroke-dashoffset: 320; } to { stroke-dashoffset: 0; } }
+	@keyframes fwc-wave { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+	@keyframes fwc-ring { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.9); opacity: 0; } }
+	@keyframes fwc-pick { 0%, 45% { background: #fff; color: #1f2a44; border-color: rgb(31 42 68 / 0.14); } 60%, 100% { background: #5b57ee; color: #fff; border-color: #5b57ee; } }
+	@keyframes fwc-cursor { 0% { transform: translate(60px, 70px); opacity: 0; } 20% { opacity: 1; } 45% { transform: translate(0, 0); } 55% { transform: translate(0, 0) scale(0.85); } 100% { transform: translate(0, 0) scale(1); opacity: 1; } }
+	.scene-pop { animation: fwc-pop 0.7s var(--ease-out-expo) both; }
+	.scene-stamp { animation: fwc-stamp 0.7s 1.4s var(--ease-out-expo) both; }
+	.scene-sign path { stroke-dasharray: 320; animation: fwc-sign 1.8s 0.4s ease-out both; }
+	.scene-wave { animation: fwc-wave 1.1s ease-in-out infinite; transform-origin: center; }
+	.scene-ring { animation: fwc-ring 1.8s ease-out infinite; }
+	.scene-pick { animation: fwc-pick 2.4s 0.4s ease both; }
+	.scene-cursor { animation: fwc-cursor 2.4s 0.2s cubic-bezier(0.3, 0.7, 0.2, 1) both; }
+
+	/* Headline accent that slowly shimmers (one word only). */
+	@keyframes fwc-shine { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+	.shine-text { background: linear-gradient(90deg, #5b57ee 0%, #9d9bff 40%, #5b57ee 80%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: fwc-shine 6s linear infinite; }
+
+	/* Cards that rise and tilt a little on hover. */
+	.lift3d { transition: transform 0.45s var(--ease-out-expo), box-shadow 0.45s; }
+	.lift3d:hover { transform: translateY(-8px) rotateX(3deg); box-shadow: 0 30px 60px -24px rgb(31 42 68 / 0.3); }
+
+	/* Sections that rise as they scroll in, where the browser supports scroll timelines (others use <Reveal>). */
+	@keyframes fwc-rise { from { opacity: 0; transform: translateY(40px) scale(0.985); } to { opacity: 1; transform: none; } }
+	@supports (animation-timeline: view()) {
+		.scroll-rise { animation: fwc-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.shape-spin, .shape-drift, .tab-fill, .scene-pop, .scene-stamp, .scene-sign path, .scene-wave, .scene-ring, .scene-pick, .scene-cursor, .shine-text, .scroll-rise { animation: none !important; }
+	.shine-text { color: var(--color-accent-deep); background: none; }
+	.lift3d:hover { transform: none; }
+	.float-on-hover:hover .float-target, .float-always .float-target { animation: none; }
+	.marquee-track { animation: none; }
+	[data-state] { animation: none !important; }
+	.hero-in { animation: none; }
+	.hero-progress { animation: none; transform: scaleX(1); }
+	html { scroll-behavior: auto; }
+}
