@@ -5,16 +5,10 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { SiteLink } from '@/components/ui/SiteLink';
 import { cn } from '@/lib/cn';
+import { homeServices } from '@/data/home';
 
-const interests = [
-	'Business Formation & Corporate Services',
-	'Regulatory Licensing & Compliance',
-	'Contracts, IP & Governance',
-	'Business Advisory & Growth',
-	'Marketing & Brand',
-	'Paid Consultation',
-	'Other enquiry',
-];
+// The five services (same names as everywhere else on the site), then the two other reasons to write.
+const interests = [...homeServices.map((s) => s.name), 'Paid consultation', 'Other enquiry'];
 
 type Values = { full_name: string; email: string; phone: string; company: string; subject: string; message: string; website: string };
 const empty: Values = { full_name: '', email: '', phone: '', company: '', subject: '', message: '', website: '' };
@@ -109,7 +103,7 @@ export function EnquiryForm() {
 			{error && <p role="alert" className="mt-4 rounded-xl border border-[#e8664a]/40 bg-[#e8664a]/10 px-4 py-3 text-sm text-[#a2381f]">{error}</p>}
 
 			<button type="submit" disabled={state === 'sending'} className="group mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full bg-accent-btn px-8 text-base font-medium text-white transition-colors duration-300 hover:bg-accent-hover disabled:cursor-wait disabled:opacity-70 sm:w-auto">
-				{state === 'sending' ? <><Loader2 className="size-5 animate-spin" /> Sending your enquiry…</> : 'Book a consultation'}
+				{state === 'sending' ? <><Loader2 className="size-5 animate-spin" /> Sending your enquiry…</> : 'Send enquiry'}
 			</button>
 			<p className="mt-5 text-sm text-ink-mute">By submitting this form, you agree to our <SiteLink href="/privacy" className="prose-link">Privacy Policy</SiteLink>. All information is treated with strict professional confidentiality.</p>
 		</form>

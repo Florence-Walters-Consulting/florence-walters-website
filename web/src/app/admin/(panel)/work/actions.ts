@@ -23,6 +23,9 @@ const schema = z.object({
 	title: text('Full name', 255),
 	category: z.enum(workCategories, { message: 'Please choose a category.' }),
 	summary: z.string().trim().max(400, 'The summary is too long (maximum 400 characters).').default(''),
+	problem: z.string().trim().max(400, 'The problem is too long (maximum 400 characters).').default(''),
+	result: z.string().trim().max(400, 'The result is too long (maximum 400 characters).').default(''),
+	duration: z.string().trim().max(80, 'The time taken is too long (maximum 80 characters).').default(''),
 	scope: z.string().default(''),
 	receive: z.string().default(''),
 	service: z.string().refine((s) => services.includes(s), 'Please choose the related service.'),
@@ -67,7 +70,7 @@ export async function saveWork(_prev: ActionState, formData: FormData): Promise<
 		} else if (input.certificate === '__custom' && oldCert) certificate = existing!.certificate;
 		else if (certificateKeys.includes(input.certificate)) certificate = input.certificate;
 
-		const values = { code: input.code, kind: input.kind, body: input.body, title: input.title, logo, certificate, category: input.category, summary: input.summary, scope, receive, serviceSlug: input.service, status: input.status };
+		const values = { code: input.code, kind: input.kind, body: input.body, title: input.title, logo, certificate, category: input.category, summary: input.summary, problem: input.problem, result: input.result, duration: input.duration, scope, receive, serviceSlug: input.service, status: input.status };
 		try {
 			if (!existing) {
 				await insertWork(await uniqueSlug(makeSlug(input.code) || 'highlight', slugTaken), values);

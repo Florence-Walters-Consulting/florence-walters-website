@@ -34,7 +34,8 @@ export function NewsletterForm() {
 			<label htmlFor="newsletter-email" className="text-3xl font-bold text-white">
 				Subscribe to our newsletter<span className="stop">.</span>
 			</label>
-			<div className="mt-6 flex items-center border-b border-white/30 transition-colors focus-within:border-accent-soft">
+			<p className="mt-2 text-white/70">One email a month. Unsubscribe any time.</p>
+			<div className="mt-5 flex flex-col gap-3 sm:flex-row">
 				<input
 					id="newsletter-email"
 					type="email"
@@ -43,9 +44,10 @@ export function NewsletterForm() {
 					placeholder="Email address"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
-					className="min-w-0 flex-1 bg-transparent py-3 text-white placeholder:text-white/50 focus:outline-none"
+					className="min-h-12 min-w-0 flex-1 rounded-full border border-white/30 bg-white/5 px-5 text-white placeholder:text-white/50 focus:border-accent-soft focus:outline-none"
 				/>
-				<button type="submit" disabled={busy} aria-label="Subscribe" className="grid size-10 shrink-0 place-items-center rounded-full bg-accent-btn text-white transition-colors hover:bg-accent-bright disabled:opacity-50">
+				<button type="submit" disabled={busy} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-accent-btn px-7 font-semibold text-white transition-colors hover:bg-accent-bright disabled:opacity-50">
+					{busy ? 'Subscribing…' : 'Subscribe'}
 					<ArrowRight className="size-4" />
 				</button>
 			</div>

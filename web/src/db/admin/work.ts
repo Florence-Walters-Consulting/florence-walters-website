@@ -13,6 +13,9 @@ export type WorkValues = {
 	certificate: string;
 	category: string;
 	summary: string;
+	problem: string;
+	result: string;
+	duration: string;
 	scope: { t: string; d: string }[];
 	receive: string[];
 	serviceSlug: string;

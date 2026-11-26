@@ -69,8 +69,8 @@ export async function InsightsEvents() {
 			</section>
 
 			<section id="faq" className="section-space bg-mist pt-[clamp(3.5rem,7vw,6rem)]">
-				<Container className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-					<SectionHead label="FAQ" title="Quick answers." line="Still unsure? Take the free assessment and we will point you in the right direction." />
+				<Container className="max-w-4xl">
+					<p className="label-dot mb-6 text-sm font-semibold tracking-[0.14em] text-accent-deep uppercase">FAQ</p>
 					<Accordion defaultOpen={faqs[0]?.id} items={faqs} />
 				</Container>
 			</section>

@@ -42,7 +42,10 @@ function WorkFields({ item }: { item?: Row }) {
 				<SelectField name="category" label="Category" required defaultValue={item?.category ?? workCategories[0]} options={categoryOptions} />
 				<SelectField name="service" label="Related service" required defaultValue={item?.serviceSlug} options={serviceOptions} placeholder="Choose a service" hint="The “Part of our service” link." />
 			</div>
-			<TextAreaField name="summary" label="Summary" rows={2} defaultValue={item?.summary} hint="One or two sentences shown on the card. Never include a client's name." />
+			<TextAreaField name="summary" label="What FWC did (summary)" rows={2} defaultValue={item?.summary} hint="Story, step 2: one or two sentences shown on the card. Never include a client's name." />
+			<TextAreaField name="problem" label="The problem" rows={2} defaultValue={item?.problem} hint="Story, step 1: what the client was facing. Never include a client's name." />
+			<TextAreaField name="result" label="The result" rows={2} defaultValue={item?.result} hint="Story, step 3: what the client ended up with." />
+			<TextField name="duration" label="Time taken" maxLength={80} defaultValue={item?.duration} hint="For example “9 working days”. Leave empty to hide it. Only enter a figure you can stand behind." />
 			<TextAreaField name="scope" label="What we handled (steps)" rows={6} defaultValue={item ? formatScope(item.scope) : ''} hint="One step per line, written as “Title | what happened”. Leave empty to use our standard process for the related service." />
 			<TextAreaField name="receive" label="What the client received" rows={5} defaultValue={item?.receive.join('\n')} hint="One item per line." />
 			<div className="grid gap-4 sm:grid-cols-2">

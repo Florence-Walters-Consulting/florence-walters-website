@@ -17,6 +17,10 @@ export type WorkItem = {
 	certificateUrl?: string;
 	category: WorkCategory;
 	summary: string;
+	/** The story: the problem, the result and the time taken (what FWC did is the summary and steps). */
+	problem: string;
+	result: string;
+	duration: string;
 	scope: WorkStep[];
 	receive: string[];
 	service: { slug: string; name: string };

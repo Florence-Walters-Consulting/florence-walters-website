@@ -30,6 +30,8 @@ export const metadata: Metadata = {
 		template: '%s - Florence Walters Consulting',
 		default: 'Florence Walters Consulting',
 	},
+	description: 'Practical business solutions for organisations ready to start, comply and grow in Nigeria.',
+	openGraph: { siteName: 'Florence Walters Consulting', type: 'website', locale: 'en_NG' },
 };
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {

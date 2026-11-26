@@ -76,6 +76,7 @@ export function WorkGallery({ workItems }: { workItems: WorkItem[] }) {
 								<span className="block text-xs font-semibold tracking-[0.16em] text-accent-deep uppercase">{w.body} · {w.kind}</span>
 								<span className="mt-2 block font-display text-[clamp(1.75rem,2.6vw,2.5rem)] leading-tight transition-colors group-hover:text-accent-deep">{w.code}: {w.full}</span>
 								<span className="mt-3 block max-w-xl text-ink-soft">{w.summary}</span>
+								<span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-deep">Read the story <ArrowUpRight className="size-4" /></span>
 							</span>
 							<span className="mt-1 grid size-12 shrink-0 place-items-center rounded-full border border-ink/20 transition-colors group-hover:border-accent group-hover:bg-accent-btn group-hover:text-white">
 								<ArrowUpRight className="size-5" />
@@ -126,10 +127,24 @@ function Detail({ w, onStep }: { w: WorkItem; onStep: (d: 1 | -1) => void }) {
 				<Dialog.Close aria-label="Close" className="absolute top-5 right-5 grid size-11 place-items-center rounded-full border border-ink/20 transition-colors hover:bg-ink hover:text-white"><X className="size-5" /></Dialog.Close>
 				<p className="text-xs font-semibold tracking-[0.16em] text-accent-deep uppercase">{w.body} · {w.kind}</p>
 				<Dialog.Title className="mt-3 max-w-lg pr-12 text-[clamp(2rem,3.4vw,3rem)] leading-[1.05]">{w.code}: {w.full}</Dialog.Title>
-				<p className="mt-5 max-w-lg text-lead text-ink-soft">{w.summary}</p>
 				<p className="mt-4 text-sm text-ink-mute">Client names are kept confidential.</p>
 
-				<h3 className="mt-10 text-xs font-semibold tracking-[0.16em] text-ink-mute uppercase">What we handled</h3>
+				<h3 className="mt-8 text-xs font-semibold tracking-[0.16em] text-ink-mute uppercase">The story</h3>
+				<ol className="mt-3 grid gap-3 sm:grid-cols-2">
+					{[
+						{ n: 1, label: 'The problem', text: w.problem },
+						{ n: 2, label: 'What FWC did', text: w.summary },
+						{ n: 3, label: 'The result', text: w.result },
+						{ n: 4, label: 'Time taken', text: w.duration },
+					].filter((x) => x.text).map((x) => (
+						<li key={x.label} className="rounded-card-sm border border-line bg-mist/60 p-4">
+							<span className="flex items-center gap-2 text-xs font-bold tracking-[0.14em] text-accent-deep uppercase"><span className="grid size-5 place-items-center rounded-full bg-accent-btn text-[0.6875rem] text-white">{x.n}</span>{x.label}</span>
+							<span className="mt-2 block text-[0.9375rem] leading-relaxed text-ink">{x.text}</span>
+						</li>
+					))}
+				</ol>
+
+				<h3 className="mt-10 text-xs font-semibold tracking-[0.16em] text-ink-mute uppercase">Step by step</h3>
 				<ol className="mt-2 border-t border-line">
 					{w.scope.map((s, i) => (
 						<li key={s.t} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-line py-4">

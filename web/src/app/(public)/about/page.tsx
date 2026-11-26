@@ -7,7 +7,6 @@ import { BrandFilm } from '@/components/ui/BrandFilm';
 import { Container } from '@/components/ui/Container';
 import { Icon3D } from '@/components/ui/Icon3D';
 import { PageHero } from '@/components/ui/PageHero';
-import { ReadMore } from '@/components/ui/ReadMore';
 import { Reveal } from '@/components/ui/Reveal';
 import { Scene3D } from '@/components/ui/Scene3D';
 import { SectionHead } from '@/components/ui/SectionHead';
@@ -66,9 +65,8 @@ export default function About() {
 					<div>
 						<SectionHead label="Why we started" title="Good ideas fail without the right guidance at the right time." />
 						<div className="mt-6 grid max-w-2xl gap-4 text-lg text-ink-soft">
-							<ReadMore className="text-lg text-ink-soft">
-								Florence Walters spent over a decade working within Nigeria&apos;s regulatory and financial ecosystem before founding FWC. She saw compliance problems that could have been avoided, business structures that created unnecessary tax burdens, and growth opportunities missed for lack of planning. So she built FWC to simplify the process, with clear guidance and practical support every step of the way.
-							</ReadMore>
+							<p>FWC was founded by professionals who have worked inside Nigeria&apos;s regulatory and financial systems. Again and again, we saw businesses held back by problems that could have been avoided: licences that lapsed, filings that were missed, structures that cost more in tax than they needed to, and growth plans that stalled for lack of preparation.</p>
+							<p>We built FWC to change that. We give businesses clear guidance and practical, hands-on support, from registration and compliance to contracts and growth, so they can get it right the first time and focus on running the business.</p>
 						</div>
 					</div>
 				</Container>

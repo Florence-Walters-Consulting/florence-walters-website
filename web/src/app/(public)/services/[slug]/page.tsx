@@ -39,14 +39,18 @@ export default async function ServicePage({ params }: Props) {
 			{/* 1 Hero: live art, headline, one line, two buttons */}
 			<ServiceHero page={page} />
 			{page.banner && <p className="bg-accent-btn px-5 py-3 text-center text-sm font-semibold text-white">{page.banner}</p>}
-			{/* 2 Is this for you? Tap the one that sounds like you */}
-			<Situations items={page.situations} action={action} />
-			{/* The page's signature tool */}
-			{page.tool === 'structure' && <StructurePicker action={action} />}
-			{page.tool === 'licences' && <LicenceFinder action={action} />}
-			{page.tool === 'health' && <HealthCheck slug={slug} />}
-			{page.tool === 'goals' && <GoalExplorer slug={slug} />}
-			{page.tool === 'brand' && <BrandCheck included={page.included} action={action} />}
+			{/* 2 Is this for you?, then the page's signature tool. On phones the Licences page puts its licence finder first,
+			    because it is the most useful thing on the site; everywhere else the order is the same. */}
+			<div className="flex flex-col">
+				<div className={page.tool === 'licences' ? 'order-2 lg:order-1' : undefined}><Situations items={page.situations} action={action} /></div>
+				<div className={page.tool === 'licences' ? 'order-1 lg:order-2' : undefined}>
+					{page.tool === 'structure' && <StructurePicker action={action} />}
+					{page.tool === 'licences' && <LicenceFinder action={action} />}
+					{page.tool === 'health' && <HealthCheck slug={slug} />}
+					{page.tool === 'goals' && <GoalExplorer slug={slug} />}
+					{page.tool === 'brand' && <BrandCheck included={page.included} action={action} />}
+				</div>
+			</div>
 			{/* 3 What's included: auto-advancing stage */}
 			<IncludedTabs items={page.included} addOn={page.addOn} />
 			{(page.legalNote || page.honest) && (

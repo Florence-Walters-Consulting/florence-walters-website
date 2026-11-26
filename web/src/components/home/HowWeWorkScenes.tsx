@@ -8,7 +8,7 @@ export function HowScene({ i }: { i: number }) {
 	if (i === 0) {
 		return (
 			<div className="scene-pop relative w-[19rem] rounded-3xl bg-white p-6 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.6)] [transform:rotateY(-10deg)_rotateX(6deg)] sm:w-[22rem]">
-				<div className="flex justify-between text-xs font-bold tracking-wide text-ink-soft"><span>STEP 1 OF 4</span><span>~5 MIN</span></div>
+				<div className="flex justify-between text-xs font-bold tracking-wide text-ink-soft"><span>QUESTION 1 OF 4</span><span>~5 MIN</span></div>
 				<div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-mist-deep"><div className="h-full w-1/4 origin-left rounded-full bg-accent-btn [animation:fwc-fill_1.2s_both]" /></div>
 				<p className="mt-5 text-xl leading-tight font-black text-ink">Where is your business today?</p>
 				<div className="mt-4 grid gap-2.5 text-[0.9375rem] font-semibold">
